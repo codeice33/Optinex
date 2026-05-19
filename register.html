@@ -1,0 +1,516 @@
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Join the Movement - Glamour</title>
+  <meta name="description" content="Join Glamour. Create your account and start earning today.">
+  
+  <!-- Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Icons: FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Animations: AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* ==========================================================
+       1. GLAMOUR COLOR SYSTEM & VARIABLES
+       ========================================================== */
+    :root {
+      --bg-black: #000000;
+      --primary: #09FDB5;
+      --gold: #FFD700;
+      --white: #ffffff;
+      --text-muted: #6b7c72;
+      --surface: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.08);
+      --red: #ff4d4d;
+      --font-main: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow-x: hidden; }
+    
+    body { 
+      font-family: var(--font-main); 
+      background-color: var(--bg-black); 
+      color: var(--white); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      min-height: 100vh; 
+      padding: 20px;
+      position: relative;
+    }
+
+    /* ==========================================================
+       2. BLURRED BACKGROUND IMAGE
+       ========================================================== */
+    .global-bg-image {
+      position: fixed; 
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: url('https://glamourafrican.top/glamour.jpg') no-repeat center center;
+      background-size: cover;
+      z-index: -2;
+    }
+    
+    /* Fallback gradient if image is missing */
+    .global-bg-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #050505 0%, #0a0a0a 50%, #050505 100%);
+      z-index: -1;
+    }
+
+    .global-glass-overlay {
+      position: fixed; 
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6); 
+      z-index: -1;
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+    }
+
+    /* ==========================================================
+       3. REGISTER CARD 
+       ========================================================== */
+    .register-container {
+      width: 100%;
+      max-width: 480px;
+      background: rgba(10, 10, 10, 0.85);
+      border-radius: 28px;
+      padding: 40px 32px; 
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(9, 253, 181, 0.05);
+      border: 1px solid var(--border);
+      position: relative;
+      z-index: 10;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      overflow: hidden;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+
+    /* Top Gradient Border Effect */
+    .register-container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), var(--gold), transparent);
+      opacity: 0.6;
+    }
+
+    /* Custom Scrollbar styling */
+    .register-container::-webkit-scrollbar { width: 6px; }
+    .register-container::-webkit-scrollbar-track { background: transparent; }
+    .register-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+    .register-container::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+    /* Logo Area */
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px; 
+      text-decoration: none;
+    }
+    .brand-logo-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--gold));
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #000;
+      box-shadow: 0 8px 20px rgba(9, 253, 181, 0.2);
+    }
+    .brand-logo img {
+      display: block;
+      height: 54px; 
+      width: auto;
+      max-width: 180px;
+      object-fit: contain;
+    }
+
+    /* Typography */
+    .page-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--white);
+      text-align: center;
+      margin-bottom: 4px;
+      letter-spacing: -1px;
+    }
+    .page-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 30px; 
+      font-weight: 500;
+    }
+
+    /* Alert Box */
+    .alert-box {
+      background: rgba(255, 77, 77, 0.08);
+      border: 1px solid rgba(255, 77, 77, 0.2);
+      color: var(--red);
+      padding: 14px 16px;
+      border-radius: 14px;
+      margin-bottom: 24px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
+    .alert-box i { font-size: 1.1rem; }
+
+    /* Form Layout */
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      position: relative;
+      flex: 1;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 16px 16px 16px 48px; /* Padding for left icons */
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--white);
+      transition: all 0.3s ease;
+      appearance: none; 
+      -webkit-appearance: none;
+    }
+    .form-control:focus {
+      outline: none;
+      background: rgba(9, 253, 181, 0.03);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(9, 253, 181, 0.1);
+    }
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+      font-weight: 400;
+    }
+    .form-control option {
+      background: #111;
+      color: #fff;
+    }
+
+    /* SPECIAL INPUT ICONS - Glamour Gradient & Glow */
+    .input-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      /* Gradient Text effect */
+      background: linear-gradient(135deg, var(--primary), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1rem;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 2px 4px rgba(9, 253, 181, 0.2)); /* Glow */
+    }
+    .form-control:focus ~ .input-icon {
+      transform: translateY(-50%) scale(1.15); /* Pop effect */
+      filter: drop-shadow(0 4px 8px rgba(9, 253, 181, 0.4));
+    }
+
+    /* Select Dropdown Arrow */
+    .select-arrow {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+      font-size: 0.8rem;
+    }
+
+    /* PASSWORD STRENGTH METER */
+    .password-strength {
+      margin-top: 10px;
+      height: 4px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+    }
+    .strength-bar {
+      height: 100%;
+      width: 0;
+      border-radius: 4px;
+      transition: width 0.3s ease, background-color 0.3s ease;
+    }
+    .strength-text {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      display: block;
+      text-align: right;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* PASSWORD TOGGLE ICON (Right side) */
+    .pass-toggle {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 4px;
+      transition: all 0.3s;
+      z-index: 2;
+    }
+    .pass-toggle:hover { 
+      color: var(--primary); 
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, var(--primary), #00cc8f);
+      color: #000;
+      border: none;
+      border-radius: 16px;
+      font-family: var(--font-main);
+      font-size: 1.05rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(9, 253, 181, 0.2);
+      margin-top: 15px;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 35px rgba(9, 253, 181, 0.35);
+    }
+    .btn-submit:active {
+      transform: scale(0.98);
+    }
+
+    /* Footer */
+    .form-footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .form-footer a {
+      color: var(--primary);
+      font-weight: 800;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .form-footer a:hover { color: var(--gold); }
+
+    /* Mobile Adjustments */
+    @media (max-width: 480px) {
+      .register-container { padding: 30px 20px; max-height: 100vh; border-radius: 24px; }
+      .page-title { font-size: 1.5rem; }
+      .form-row { flex-direction: column; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Layers -->
+  <div class="global-bg-image"></div>
+  <div class="global-glass-overlay"></div>
+
+  <!-- Main Container -->
+  <div class="register-container" data-aos="fade-up">
+    
+    <!-- Header Logo -->
+    <a href="index.html" class="brand-logo">
+      <img src="golove.png" alt="Glamour Logo" onerror="this.style.display='none';document.getElementById('fallbackLogo').style.display='flex';">
+      <!-- Fallback text logo if image fails -->
+      <div class="brand-logo-icon" id="fallbackLogo">G</div>
+    </a>
+
+    <h1 class="page-title">Create Account</h1>
+    <p class="page-subtitle">Join Glamour Today. Start earning today.</p>
+
+    
+    <form method="post" novalidate id="registerForm">
+      <div class="form-row">
+        <div class="form-group">
+          <input type="text" name="fullname" class="form-control" placeholder="Full Name" required>
+          <i class="fas fa-user input-icon"></i>
+        </div>
+        <div class="form-group">
+          <input type="text" name="username" class="form-control" placeholder="Username" required>
+          <i class="fas fa-at input-icon"></i>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+        <i class="fas fa-envelope input-icon"></i>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <input type="number" name="phoneNumber" class="form-control" placeholder="Phone Number" required>
+          <i class="fas fa-phone input-icon"></i>
+        </div>
+        <div class="form-group">
+          <select name="country" class="form-control" required>
+            <option value="" disabled selected>Region</option>
+            <option value="International">International</option>
+            <optgroup label="Africa">
+              <option value="Nigeria">Nigeria</option>
+              <option value="Ghana">Ghana</option>
+              <option value="Cameroon">Cameroon</option>
+              <option value="Kenya">Kenya</option>
+              <option value="South Africa">South Africa</option>
+            </optgroup>
+            <optgroup label="Asia">
+              <option value="India">India</option>
+              <option value="Philippines">Philippines</option>
+            </optgroup>
+          </select>
+          <i class="fas fa-globe input-icon"></i>
+          <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="text" name="refUsername" class="form-control" placeholder="Referral Username (Optional)" value="">
+        <i class="fas fa-user-plus input-icon"></i>
+      </div>
+
+      <div class="form-group">
+        <input type="password" name="password" id="regPassword" class="form-control" placeholder="Create Password" required>
+        <i class="fas fa-lock input-icon"></i>
+        <button type="button" class="pass-toggle" onclick="togglePassword('regPassword', 'passEyeIcon')">
+            <i class="fas fa-eye" id="passEyeIcon"></i>
+        </button>
+      </div>
+
+      <!-- Password Strength Meter -->
+      <div class="password-strength">
+        <div class="strength-bar" id="strengthBar"></div>
+      </div>
+      <span class="strength-text" id="strengthText">Weak</span>
+
+      <input type="hidden" name="planType" value="plan_a">
+
+      <button type="submit" name="signup" class="btn-submit">
+        Create Account <i class="fas fa-arrow-right"></i>
+      </button>
+    </form>
+
+    <div class="form-footer">
+      Already have an account? <a href="login.html">Login here</a>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Initialize Animations
+    AOS.init({ duration: 800, once: true, offset: 20 });
+
+    // Toggle Password Visibility
+    function togglePassword(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === "password") { 
+        input.type = "text"; 
+        icon.classList.replace('fa-eye', 'fa-eye-slash'); 
+      } else { 
+        input.type = "password"; 
+        icon.classList.replace('fa-eye-slash', 'fa-eye'); 
+      }
+    }
+
+    // Password Strength Logic (Glamour Themed Colors)
+    const passwordInput = document.getElementById('regPassword');
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+
+    passwordInput.addEventListener('input', function() {
+      const val = passwordInput.value;
+      let result = 0;
+      
+      if(val.length > 5) result += 20;
+      if(val.length > 7) result += 10;
+      if(/[A-Z]/.test(val)) result += 20;
+      if(/[0-9]/.test(val)) result += 20;
+      if(/[^A-Za-z0-9]/.test(val)) result += 30;
+
+      // Update Bar
+      strengthBar.style.width = result + '%';
+      
+      // Update Color & Text based on Glamour palette
+      if (result <= 20) {
+        strengthBar.style.backgroundColor = '#ff4d4d'; // Glamour Red
+        strengthText.innerText = 'Weak';
+        strengthText.style.color = '#ff4d4d';
+      } else if (result <= 50) {
+        strengthBar.style.backgroundColor = '#FFD700'; // Glamour Gold
+        strengthText.innerText = 'Fair';
+        strengthText.style.color = '#FFD700';
+      } else if (result <= 80) {
+        strengthBar.style.backgroundColor = '#00C9F3'; // Glamour Cyan
+        strengthText.innerText = 'Good';
+        strengthText.style.color = '#00C9F3';
+      } else {
+        strengthBar.style.backgroundColor = '#09FDB5'; // Glamour Primary
+        strengthText.innerText = 'Strong';
+        strengthText.style.color = '#09FDB5';
+      }
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      if (!this.reportValidity()) return;
+
+      const username = this.querySelector('input[name="username"]').value.trim() || 'GlamourUser';
+      const country = this.querySelector('select[name="country"]').value || 'Nigeria';
+      window.location.href = 'dashboard.html?username=' + encodeURIComponent(username) + '&country=' + encodeURIComponent(country);
+    });
+
+    const registerParams = new URLSearchParams(window.location.search);
+    const referralField = document.querySelector('input[name="refUsername"]');
+    const incomingReferral = registerParams.get('refUsername') || registerParams.get('ref') || '';
+    if (incomingReferral && referralField) {
+      referralField.value = incomingReferral.replace(/\+/g, ' ').trim();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Glamour Dashboard</title>
+  <meta name="description" content="Your Glamour earnings dashboard.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #050505;
+      --surface: #101010;
+      --surface-soft: #161616;
+      --card: #0f0f0f;
+      --line: rgba(255,255,255,0.08);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.58);
+      --neon: #09FDB5;
+      --gold: #FFD700;
+      --glow: rgba(255, 215, 0, 0.18);
+      --font: 'Inter', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at top, rgba(255,215,0,0.14), transparent 26%),
+        radial-gradient(circle at bottom left, rgba(9,253,181,0.10), transparent 24%),
+        var(--bg);
+      color: var(--text);
+      padding: 18px;
+    }
+
+    .dashboard-shell {
+      width: min(100%, 470px);
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 6px 2px;
+    }
+
+    .menu-btn,
+    .currency-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .menu-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1rem;
+    }
+
+    .currency-chip {
+      gap: 8px;
+      padding: 12px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      background:
+        linear-gradient(180deg, rgba(255,215,0,0.22) 0%, rgba(255,215,0,0.04) 24%, #0c0c0c 24.5%, #0c0c0c 100%);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.36);
+      border: 1px solid rgba(255,255,255,0.05);
+      min-height: 280px;
+    }
+
+    .hero-card::before,
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      inset: auto;
+      width: 160%;
+      height: 160px;
+      left: -20%;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(255,215,0,0.22), transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-card::before {
+      top: -46px;
+      transform: rotate(-5deg);
+    }
+
+    .hero-card::after {
+      top: 8px;
+      opacity: 0.65;
+      transform: rotate(6deg);
+    }
+
+    .card-head {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 18px 0;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,215,0,0.18));
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.08);
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .avatar i {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .user-name {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .welcome-back {
+      color: rgba(255,255,255,0.82);
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .live-pill::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--neon);
+      box-shadow: 0 0 12px rgba(9, 253, 181, 0.7);
+      flex-shrink: 0;
+    }
+
+    .status-pill,
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.09);
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .earnings-panel {
+      position: relative;
+      z-index: 1;
+      margin: 28px 14px 14px;
+      padding: 22px 18px 18px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(18,18,18,0.98), rgba(10,10,10,0.96));
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .eyebrow {
+      font-size: 0.86rem;
+      color: rgba(255,255,255,0.64);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .amount-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .amount {
+      font-size: clamp(2rem, 8vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .amount-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-align: right;
+      max-width: 120px;
+      line-height: 1.4;
+    }
+
+    .bonus-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .bonus-box {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .bonus-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .bonus-value {
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .bonus-value.euro { color: var(--gold); }
+    .bonus-value.naira { color: var(--neon); }
+
+    .panel {
+      background: var(--surface);
+      border-radius: 26px;
+      padding: 22px 18px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .activation-panel {
+      background:
+        linear-gradient(135deg, rgba(255,215,0,0.08), rgba(9,253,181,0.05)),
+        #101010;
+    }
+
+    .activation-copy {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .activate-btn,
+    .proof-btn,
+    .copy-btn {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      font-family: var(--font);
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .activate-btn {
+      padding: 16px 18px;
+      background: linear-gradient(135deg, var(--gold), #ffef88);
+      color: #050505;
+      box-shadow: 0 14px 32px rgba(255, 215, 0, 0.16);
+      font-size: 0.98rem;
+    }
+
+    .activate-btn:hover,
+    .proof-btn:hover,
+    .copy-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .proof-btn {
+      padding: 15px 18px;
+      background: linear-gradient(135deg, var(--neon), #7cffd4);
+      color: #04110d;
+      font-size: 0.94rem;
+      box-shadow: 0 14px 32px rgba(9, 253, 181, 0.14);
+    }
+
+    .copy-btn {
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 0.82rem;
+    }
+
+    .copy-mini {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .copy-mini:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.76);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 50;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .menu-sheet {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.68);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 20px;
+      z-index: 60;
+    }
+
+    .menu-sheet.open {
+      display: flex;
+    }
+
+    .menu-panel {
+      width: min(100%, 300px);
+      border-radius: 24px;
+      background: #0d0d0d;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 26px 80px rgba(0,0,0,0.4);
+      overflow: hidden;
+    }
+
+    .menu-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 16px 10px;
+    }
+
+    .menu-panel-title {
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .menu-links {
+      display: grid;
+      gap: 2px;
+      padding: 10px;
+    }
+
+    .menu-links a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 14px;
+      border-radius: 16px;
+      color: var(--text);
+      text-decoration: none;
+      background: rgba(255,255,255,0.03);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .menu-links a i {
+      width: 18px;
+      text-align: center;
+      color: var(--gold);
+    }
+
+    .activate-modal {
+      width: min(100%, 420px);
+      border-radius: 28px;
+      background: #0c0c0c;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 22px 18px 18px;
+      box-shadow: 0 26px 80px rgba(0,0,0,0.45);
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .modal-sub {
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.6;
+    }
+
+    .close-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .activation-price {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      margin-bottom: 14px;
+    }
+
+    .activation-price strong {
+      font-size: 1.35rem;
+      color: var(--gold);
+      letter-spacing: -0.04em;
+    }
+
+    .activation-timer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(9,253,181,0.06));
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .activation-timer-copy {
+      color: rgba(255,255,255,0.72);
+      font-size: 0.82rem;
+      line-height: 1.55;
+      max-width: 28ch;
+    }
+
+    .activation-timer-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.22);
+      color: var(--gold);
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .details-grid {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .detail-card {
+      padding: 14px;
+      border-radius: 18px;
+      background: #131313;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .detail-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .detail-value {
+      font-size: 1rem;
+      font-weight: 800;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+
+    .modal-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.03em;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .quick-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
+      min-height: 98px;
+      padding: 14px 8px;
+      border-radius: 18px;
+      background: var(--surface-soft);
+      color: var(--text);
+      text-decoration: none;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .quick-link:hover {
+      transform: translateY(-4px);
+      background: #1a1a1a;
+    }
+
+    .quick-link.task-live {
+      background: linear-gradient(135deg, rgba(9,253,181,0.16), rgba(255,215,0,0.10));
+      border: 1px solid rgba(9,253,181,0.18);
+    }
+
+    .quick-link.sponsored-link {
+      background: linear-gradient(135deg, rgba(37,211,102,0.16), rgba(255,255,255,0.05));
+      border: 1px solid rgba(37,211,102,0.18);
+    }
+
+    .task-history-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .task-history-item {
+      padding: 14px;
+      border-radius: 18px;
+      background: #131313;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .task-history-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .task-history-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .task-history-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(9,253,181,0.12);
+      color: var(--neon);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .task-history-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: rgba(255,255,255,0.68);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .task-history-amount {
+      color: var(--gold);
+      font-size: 0.96rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .quick-link i {
+      font-size: 1.1rem;
+      color: var(--gold);
+    }
+
+    .quick-link span {
+      font-size: 0.72rem;
+      line-height: 1.3;
+      color: rgba(255,255,255,0.78);
+      font-weight: 700;
+    }
+
+    .voice-note {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      gap: 18px;
+      padding: 0;
+      border: 1px solid rgba(255,255,255,0.06);
+      background:
+        radial-gradient(circle at top right, rgba(255,215,0,0.18), transparent 34%),
+        radial-gradient(circle at bottom left, rgba(9,253,181,0.12), transparent 30%),
+        linear-gradient(180deg, #131313 0%, #0a0a0a 100%);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.34);
+    }
+
+    .voice-note::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04), transparent 45%);
+      pointer-events: none;
+    }
+
+    .voice-wrap {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 18px;
+      padding: 22px 18px 20px;
+    }
+
+    .voice-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .voice-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .voice-meta {
+      min-width: 76px;
+      padding: 12px 10px;
+      border-radius: 18px;
+      text-align: center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .voice-meta strong {
+      display: block;
+      font-size: 1.05rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .voice-meta span {
+      display: block;
+      color: rgba(255,255,255,0.62);
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .voice-copy {
+      color: rgba(255,255,255,0.74);
+      font-size: 0.92rem;
+      line-height: 1.7;
+      max-width: 34ch;
+    }
+
+    .voice-wave {
+      display: flex;
+      align-items: end;
+      gap: 7px;
+      height: 42px;
+      padding: 0 2px;
+    }
+
+    .voice-wave span {
+      width: 8px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,215,0,0.92), rgba(9,253,181,0.78));
+      box-shadow: 0 0 16px rgba(255,215,0,0.12);
+    }
+
+    .voice-wave span:nth-child(1) { height: 16px; }
+    .voice-wave span:nth-child(2) { height: 28px; }
+    .voice-wave span:nth-child(3) { height: 20px; }
+    .voice-wave span:nth-child(4) { height: 38px; }
+    .voice-wave span:nth-child(5) { height: 24px; }
+    .voice-wave span:nth-child(6) { height: 32px; }
+    .voice-wave span:nth-child(7) { height: 18px; }
+    .voice-wave span:nth-child(8) { height: 26px; }
+
+    .voice-player {
+      padding: 14px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(14px);
+    }
+
+    .voice-player-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .voice-player-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .voice-player-time {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.56);
+    }
+
+    .voice-audio {
+      width: 100%;
+      filter: hue-rotate(25deg) saturate(1.08);
+    }
+
+    .voice-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .voice-list div {
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.82);
+      font-size: 0.84rem;
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    .referral-panel {
+      display: grid;
+      gap: 14px;
+      background:
+        linear-gradient(135deg, rgba(255,215,0,0.10), rgba(9,253,181,0.08)),
+        #101010;
+    }
+
+    .referral-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .referral-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--neon);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .referral-copy {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    .referral-box {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .referral-label {
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .referral-link-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .referral-link {
+      flex: 1;
+      min-width: 0;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.24);
+      color: rgba(255,255,255,0.86);
+      font-size: 0.82rem;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .copy-link-btn,
+    .open-link-btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 14px;
+      font-weight: 800;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .copy-link-btn:hover,
+    .open-link-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .copy-link-btn {
+      padding: 12px 14px;
+      background: var(--gold);
+      color: #0a0a0a;
+    }
+
+    .open-link-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 16px;
+      text-decoration: none;
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+    }
+
+    .bottom-nav {
+      position: sticky;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 12px;
+      border-radius: 22px;
+      background: rgba(12,12,12,0.94);
+      backdrop-filter: blur(16px);
+    }
+
+    .bottom-nav a {
+      display: grid;
+      place-items: center;
+      gap: 6px;
+      padding: 10px 6px;
+      color: rgba(255,255,255,0.74);
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .bottom-nav a i {
+      font-size: 1rem;
+    }
+
+    .bottom-nav a.active {
+      color: var(--neon);
+    }
+
+    @media (max-width: 420px) {
+      body { padding: 14px; }
+      .quick-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .bonus-strip { grid-template-columns: 1fr; }
+      .voice-top,
+      .referral-top,
+      .referral-link-row {
+        grid-template-columns: 1fr;
+      }
+      .voice-top,
+      .referral-top,
+      .referral-link-row {
+        display: grid;
+      }
+      .copy-link-btn,
+      .open-link-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-shell">
+    <div class="topbar">
+      <button class="menu-btn" id="menuTrigger" type="button" aria-label="Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="brand-mark" aria-hidden="true" style="width:128px;height:42px;">
+        <img src="https://glamourafrica.vercel.app/glamour/golove.png" alt="" style="width:100%;height:100%;object-fit:contain;display:block;">
+      </div>
+      <button class="currency-chip" id="currencyChip" type="button">
+        <span id="currencyLabel">NGN</span>
+        <i class="fas fa-chevron-down" style="font-size:0.72rem;"></i>
+      </button>
+    </div>
+
+    <section class="hero-card">
+      <div class="card-head">
+        <div class="profile">
+          <div class="avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div>
+            <div class="user-name" id="dashboardName">GLAMOUR USER</div>
+            <div class="welcome-back">Welcome back!</div>
+          </div>
+        </div>
+        <div class="status-pill">NGN</div>
+      </div>
+
+      <div class="earnings-panel">
+        <div class="eyebrow">Total Earnings</div>
+        <div class="amount-row">
+          <div class="amount" id="totalAmount">₦12,000</div>
+          <div class="amount-note">
+            <span class="live-pill">Live</span>
+          </div>
+        </div>
+        <div class="bonus-strip">
+          <div class="bonus-box">
+            <div class="bonus-label">Welcome Bonus EUR</div>
+            <div class="bonus-value euro">€7</div>
+          </div>
+          <div class="bonus-box">
+            <div class="bonus-label">Welcome Bonus NGN</div>
+            <div class="bonus-value naira">₦12,000</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">Glamour Tasks</div>
+      <div class="quick-links">
+        <a href="#" class="quick-link locked-link">
+          <i class="fas fa-play-circle"></i>
+          <span>Watch Video</span>
+        </a>
+        <a href="#" class="quick-link locked-link">
+          <i class="fas fa-headphones"></i>
+          <span>Stream & Earn</span>
+        </a>
+        <a href="#" class="quick-link task-live" id="completeTaskLink">
+          <i class="fas fa-list-check"></i>
+          <span id="taskLinkLabel">Task</span>
+        </a>
+        <a href="https://chat.whatsapp.com/FaV35SN2BhDFt6rFMaiW7y?mode=ems_copy_t" class="quick-link sponsored-link" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-whatsapp"></i>
+          <span>Sponsored Task</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="panel activation-panel">
+      <div class="section-title">Activation</div>
+      <p class="activation-copy">Activate your account to unlock full access to Glamour earning streams. Tap the button below to view account details, make payment, and send your proof.</p>
+      <button class="activate-btn" type="button" id="openActivateModal">
+        Activate Account <i class="fas fa-arrow-right" style="margin-left:8px;"></i>
+      </button>
+    </section>
+
+    <section class="panel voice-note">
+      <div class="voice-wrap">
+        <div class="voice-top">
+          <div>
+            <div class="section-title" style="margin-bottom:8px;">How Glamour Works</div>
+            <div class="voice-badge"><i class="fas fa-wave-square"></i> Voice Note</div>
+          </div>
+          <div class="voice-meta">
+            <strong>01</strong>
+            <span>Audio Guide</span>
+          </div>
+        </div>
+        <div class="voice-wave" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <p class="voice-copy">Listen to purplespeedy the quick walkthrough to understand how Glamour works, earning streams, and how withdrawals work inside your Glamour dashboard.</p>
+        <div class="voice-player">
+          <div class="voice-player-head">
+            <div class="voice-player-label">New Member Welcome Note</div>
+            <div class="voice-player-time">Play Audio</div>
+          </div>
+          <audio class="voice-audio" controls preload="metadata">
+            <source src="WhatsApp Audio 2026-05-06 at 12.03.14 PM.mpeg" type="audio/mpeg">
+            Your browser does not support audio playback.
+          </audio>
+        </div>
+        <div class="voice-list">
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="panel referral-panel">
+      <div class="referral-top">
+        <div>
+          <div class="section-title" style="margin-bottom:8px;">Referral Link</div>
+          <div class="referral-tag"><i class="fas fa-link"></i> Invite & Earn</div>
+        </div>
+        
+      </div>
+      <p class="referral-copy">Share your personal signup link with new users and let them register under your username automatically.</p>
+      <div class="referral-box">
+        <div class="referral-label">Your Share Link</div>
+        <div class="referral-link-row">
+          <div class="referral-link" id="referralLinkText">Loading your referral link...</div>
+          <button class="copy-link-btn" type="button" id="copyReferralLink">Copy</button>
+        </div>
+        <a class="open-link-btn" id="openReferralLink" href="register.html" target="_blank" rel="noopener noreferrer">
+          Open Referral Link <i class="fas fa-arrow-up-right-from-square"></i>
+        </a>
+      </div>
+    </section>
+
+    <nav class="bottom-nav">
+      <a href="#" class="active"><i class="fas fa-house"></i><span>Home</span></a>
+      <a href="#" id="withdrawTrigger"><i class="fas fa-money-bill-wave"></i><span>Withdraw</span></a>
+      <a href="#"><i class="fas fa-chart-column"></i><span>Earnings</span></a>
+      <a href="index.html"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+    </nav>
+  </div>
+
+  <div class="menu-sheet" id="menuSheet" aria-hidden="true">
+    <div class="menu-panel">
+      <div class="menu-panel-head">
+        <div class="menu-panel-title">Quick Menu</div>
+        <button class="close-btn" type="button" id="closeMenuSheet" aria-label="Close menu">
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+      <div class="menu-links">
+        <a href="#"><i class="fas fa-house"></i><span>Home</span></a>
+        <a href="#" id="menuWithdraw"><i class="fas fa-money-bill-wave"></i><span>Withdraw</span></a>
+        <a href="#" id="menuEarnings"><i class="fas fa-chart-column"></i><span>Earnings</span></a>
+        <a href="index.html"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="activateBackdrop" aria-hidden="true">
+    <div class="activate-modal" role="dialog" aria-modal="true" aria-labelledby="activateTitle">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="activateTitle">Activate Your Glamour Account</div>
+          <div class="modal-sub">Use the details below for payment, then send your proof so activation can be confirmed quickly.</div>
+        </div>
+        <button class="close-btn" type="button" id="closeActivateModal" aria-label="Close">
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="activation-price">
+        <div>
+          <div class="detail-label">Activation Fee</div>
+          <strong>₦14,000</strong>
+        </div>
+        <div style="text-align:right;">
+          <div class="detail-label">Equivalent</div>
+          <strong style="font-size:1rem;">€8.20</strong>
+        </div>
+      </div>
+
+      <div class="activation-timer">
+        <div>
+          <div class="detail-label">Payment Window</div>
+          <div class="activation-timer-copy">This account detail display stays active for a limited time. Send your proof before the timer ends.</div>
+        </div>
+        <div class="activation-timer-chip" id="activationTimer">
+          <i class="fas fa-clock"></i>
+          <span>10:00</span>
+        </div>
+      </div>
+
+        <div class="details-grid">
+          <div class="detail-card">
+            <div class="detail-label">Bank Name</div>
+            <div class="detail-row">
+              <div class="detail-value" id="bankName">PalmPay</div>
+              <button class="copy-mini" type="button" id="copyBankName">Copy</button>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-label">Account Name</div>
+            <div class="detail-row">
+              <div class="detail-value" id="accountName">Ezenwankwo Chidimma Favour</div>
+              <button class="copy-mini" type="button" id="copyAccountName">Copy</button>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-label">Account Number</div>
+            <div class="detail-row">
+              <div class="detail-value" id="accountNumber">9133957981</div>
+              <button class="copy-mini" type="button" id="copyAccountNumber">Copy</button>
+            </div>
+          </div>
+        </div>
+
+      <div class="modal-actions">
+        <button class="copy-btn" type="button" id="copyAccountDetails">Copy Full Account Details</button>
+        <a class="proof-btn" id="sendProofBtn" href="https://wa.me/+2349014764676?text=Hello%20Glamour%2C%20I%20have%20made%20my%20activation%20payment.%20Here%20is%20my%20proof." target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">
+          Send your payment proof
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="taskHistoryBackdrop" aria-hidden="true">
+    <div class="activate-modal" role="dialog" aria-modal="true" aria-labelledby="taskHistoryTitle">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="taskHistoryTitle">Task History</div>
+          <div class="modal-sub">Completed task details and amount earned on your dashboard.</div>
+        </div>
+        <button class="close-btn" type="button" id="closeTaskHistoryModal" aria-label="Close task history">
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="task-history-list">
+        <div class="task-history-item">
+          <div class="task-history-top">
+            <div class="task-history-title">Welcome Starter Task</div>
+            <div class="task-history-badge"><i class="fas fa-check-circle"></i> Completed</div>
+          </div>
+          <div class="task-history-meta">
+            <span id="taskHistoryDate">Today</span>
+            <strong class="task-history-amount" id="taskHistoryAmount">NGN 0</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const rawName = params.get('username') || params.get('name') || 'Glamour User';
+    const selectedCountry = params.get('country') || params.get('region') || 'Nigeria';
+    const cleanName = rawName.replace(/\+/g, ' ').trim();
+    const displayName = cleanName.includes('@') ? cleanName.split('@')[0] : cleanName;
+    document.getElementById('dashboardName').textContent = displayName.toUpperCase();
+
+    const menuTrigger = document.getElementById('menuTrigger');
+    const menuSheet = document.getElementById('menuSheet');
+    const closeMenuSheet = document.getElementById('closeMenuSheet');
+    const menuWithdraw = document.getElementById('menuWithdraw');
+    const menuEarnings = document.getElementById('menuEarnings');
+    const currencyChip = document.getElementById('currencyChip');
+    const currencyLabel = document.getElementById('currencyLabel');
+    const statusPill = document.querySelector('.status-pill');
+    const totalAmount = document.getElementById('totalAmount');
+    const bonusLabels = document.querySelectorAll('.bonus-strip .bonus-label');
+    const bonusValues = document.querySelectorAll('.bonus-strip .bonus-value');
+    const completeTaskLink = document.getElementById('completeTaskLink');
+    const taskLinkLabel = document.getElementById('taskLinkLabel');
+    const withdrawTrigger = document.getElementById('withdrawTrigger');
+    const lockedLinks = document.querySelectorAll('.locked-link');
+    const activateBackdrop = document.getElementById('activateBackdrop');
+    const taskHistoryBackdrop = document.getElementById('taskHistoryBackdrop');
+    const openActivateModal = document.getElementById('openActivateModal');
+    const closeActivateModal = document.getElementById('closeActivateModal');
+    const closeTaskHistoryModal = document.getElementById('closeTaskHistoryModal');
+    const copyAccountDetails = document.getElementById('copyAccountDetails');
+    const copyBankName = document.getElementById('copyBankName');
+    const copyAccountNumber = document.getElementById('copyAccountNumber');
+    const copyAccountName = document.getElementById('copyAccountName');
+    const referralLinkText = document.getElementById('referralLinkText');
+    const copyReferralLink = document.getElementById('copyReferralLink');
+    const openReferralLink = document.getElementById('openReferralLink');
+    const activationTimer = document.getElementById('activationTimer').querySelector('span');
+    const activationPriceValues = document.querySelectorAll('.activation-price strong');
+    const taskHistoryAmount = document.getElementById('taskHistoryAmount');
+    const taskHistoryDate = document.getElementById('taskHistoryDate');
+    const accountName = document.getElementById('accountName').textContent.trim();
+    const accountNumber = document.getElementById('accountNumber').textContent.trim();
+    const bankName = document.getElementById('bankName').textContent.trim();
+    const normalizedReferralName = displayName.replace(/\s+/g, '');
+    const referralUrl = new URL('register.html', window.location.href);
+    let activationTimerInterval = null;
+    let activationRemainingSeconds = 600;
+    const taskHistoryDateKey = 'glamourTaskHistoryDate:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+    const eurWelcomeBonus = 7;
+    const eurActivationFee = 8.2;
+    const taskRewardEur = (12000 / 1593) - eurWelcomeBonus;
+    const regionalCurrencyMap = {
+      Nigeria: { code: 'NGN', symbol: '\u20A6', rate: 1593, decimals: 0 },
+      Ghana: { code: 'GHS', symbol: 'GH\u20B5', rate: 13.20, decimals: 2 },
+      Cameroon: { code: 'XAF', symbol: 'FCFA ', rate: 656.0, decimals: 0 },
+      Kenya: { code: 'KES', symbol: 'KSh ', rate: 151.5, decimals: 2 },
+      'South Africa': { code: 'ZAR', symbol: 'R', rate: 19.30, decimals: 2 },
+      India: { code: 'INR', symbol: '\u20B9', rate: 110.6, decimals: 2 },
+      Philippines: { code: 'PHP', symbol: '\u20B1', rate: 71.21, decimals: 2 },
+      International: { code: 'EUR', symbol: 'EUR ', rate: 1, decimals: 2 }
+    };
+    const eurCurrency = { code: 'EUR', symbol: 'EUR ', decimals: 2 };
+    const activeCurrencyConfig = regionalCurrencyMap[selectedCountry] || eurCurrency;
+    let currency = activeCurrencyConfig.code;
+    const taskStorageKey = 'glamourTaskCompleted:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+    let taskCompleted = window.localStorage.getItem(taskStorageKey) === 'true';
+    let taskCompletedDate = window.localStorage.getItem(taskHistoryDateKey) || '';
+
+    referralUrl.searchParams.set('refUsername', normalizedReferralName);
+    referralLinkText.textContent = referralUrl.href;
+    openReferralLink.href = referralUrl.href;
+
+    function formatMoney(value, config) {
+      const formatted = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: config.decimals,
+        maximumFractionDigits: config.decimals
+      }).format(value);
+      return config.symbol + formatted;
+    }
+
+    function renderRegionalBalances(displayCurrency) {
+      const totalEur = eurWelcomeBonus + (taskCompleted ? taskRewardEur : 0);
+      const localWelcomeBonus = eurWelcomeBonus * activeCurrencyConfig.rate;
+      const localActivationFee = eurActivationFee * activeCurrencyConfig.rate;
+      const localTotal = totalEur * activeCurrencyConfig.rate;
+      const localTaskReward = taskRewardEur * activeCurrencyConfig.rate;
+      const localLabel = 'Welcome Bonus ' + activeCurrencyConfig.code;
+
+      document.getElementById('currencyLabel').textContent = displayCurrency;
+      statusPill.textContent = displayCurrency;
+      bonusLabels[0].textContent = 'Welcome Bonus EUR';
+      bonusValues[0].textContent = formatMoney(eurWelcomeBonus, eurCurrency);
+
+      if (activeCurrencyConfig.code === 'EUR') {
+        bonusLabels[1].textContent = 'Welcome Bonus EUR';
+        bonusValues[1].textContent = formatMoney(eurWelcomeBonus, eurCurrency);
+        activationPriceValues[0].textContent = formatMoney(eurActivationFee, eurCurrency);
+        activationPriceValues[1].textContent = formatMoney(eurActivationFee, eurCurrency);
+        totalAmount.textContent = formatMoney(totalEur, eurCurrency);
+        taskHistoryAmount.textContent = formatMoney(taskRewardEur, eurCurrency);
+        return;
+      }
+
+      bonusLabels[1].textContent = localLabel;
+      bonusValues[1].textContent = formatMoney(localWelcomeBonus, activeCurrencyConfig);
+      activationPriceValues[0].textContent = formatMoney(localActivationFee, activeCurrencyConfig);
+      activationPriceValues[1].textContent = formatMoney(eurActivationFee, eurCurrency);
+      taskHistoryAmount.textContent = displayCurrency === 'EUR'
+        ? formatMoney(taskRewardEur, eurCurrency)
+        : formatMoney(localTaskReward, activeCurrencyConfig);
+      totalAmount.textContent = displayCurrency === 'EUR'
+        ? formatMoney(totalEur, eurCurrency)
+        : formatMoney(localTotal, activeCurrencyConfig);
+    }
+
+    function renderTaskState() {
+      if (taskCompleted) {
+        completeTaskLink.classList.add('locked-link');
+        taskLinkLabel.textContent = 'Task Completed';
+        taskHistoryDate.textContent = taskCompletedDate || 'Completed';
+      } else {
+        completeTaskLink.classList.remove('locked-link');
+        taskLinkLabel.textContent = 'Task';
+        taskHistoryDate.textContent = 'Pending';
+      }
+    }
+
+    function openTaskHistoryModal() {
+      taskHistoryBackdrop.classList.add('open');
+      taskHistoryBackdrop.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeTaskHistory() {
+      taskHistoryBackdrop.classList.remove('open');
+      taskHistoryBackdrop.setAttribute('aria-hidden', 'true');
+    }
+
+    function renderActivationTimer() {
+      const minutes = String(Math.floor(activationRemainingSeconds / 60)).padStart(2, '0');
+      const seconds = String(activationRemainingSeconds % 60).padStart(2, '0');
+      activationTimer.textContent = minutes + ':' + seconds;
+    }
+
+    function startActivationTimer() {
+      window.clearInterval(activationTimerInterval);
+      activationRemainingSeconds = 600;
+      renderActivationTimer();
+
+      activationTimerInterval = window.setInterval(function () {
+        if (activationRemainingSeconds <= 0) {
+          window.clearInterval(activationTimerInterval);
+          activationTimer.textContent = '00:00';
+          return;
+        }
+
+        activationRemainingSeconds -= 1;
+        renderActivationTimer();
+      }, 1000);
+    }
+
+    function openActivationModal() {
+      activateBackdrop.classList.add('open');
+      activateBackdrop.setAttribute('aria-hidden', 'false');
+      startActivationTimer();
+    }
+
+    currencyChip.addEventListener('click', function () {
+      currency = currency === 'NGN' ? 'EUR' : 'NGN';
+      currencyLabel.textContent = currency;
+      totalAmount.textContent = currency === 'NGN' ? '₦12,000' : '€7';
+    });
+
+    renderRegionalBalances(currency);
+    renderTaskState();
+
+    const freshCurrencyChip = currencyChip.cloneNode(true);
+    currencyChip.parentNode.replaceChild(freshCurrencyChip, currencyChip);
+    freshCurrencyChip.addEventListener('click', function () {
+      if (activeCurrencyConfig.code === 'EUR') {
+        currency = 'EUR';
+      } else {
+        currency = currency === activeCurrencyConfig.code ? 'EUR' : activeCurrencyConfig.code;
+      }
+      renderRegionalBalances(currency);
+    });
+
+    completeTaskLink.addEventListener('click', function (event) {
+      event.preventDefault();
+      if (taskCompleted) {
+        openTaskHistoryModal();
+        return;
+      }
+
+      taskCompleted = true;
+      window.localStorage.setItem(taskStorageKey, 'true');
+      taskCompletedDate = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+      window.localStorage.setItem(taskHistoryDateKey, taskCompletedDate);
+      renderTaskState();
+      renderRegionalBalances(currency);
+      openTaskHistoryModal();
+    });
+
+    function openMenu() {
+      menuSheet.classList.add('open');
+      menuSheet.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeMenu() {
+      menuSheet.classList.remove('open');
+      menuSheet.setAttribute('aria-hidden', 'true');
+    }
+
+    menuTrigger.addEventListener('click', openMenu);
+    closeMenuSheet.addEventListener('click', closeMenu);
+    menuSheet.addEventListener('click', function (event) {
+      if (event.target === menuSheet) closeMenu();
+    });
+
+    openActivateModal.addEventListener('click', openActivationModal);
+
+    withdrawTrigger.addEventListener('click', function (event) {
+      event.preventDefault();
+      closeMenu();
+      openActivationModal();
+    });
+
+    menuWithdraw.addEventListener('click', function (event) {
+      event.preventDefault();
+      closeMenu();
+      openActivationModal();
+    });
+
+    menuEarnings.addEventListener('click', function (event) {
+      event.preventDefault();
+      closeMenu();
+      openActivationModal();
+    });
+
+    lockedLinks.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        closeMenu();
+        openActivationModal();
+      });
+    });
+
+    function closeModal() {
+      activateBackdrop.classList.remove('open');
+      activateBackdrop.setAttribute('aria-hidden', 'true');
+      window.clearInterval(activationTimerInterval);
+    }
+
+    closeActivateModal.addEventListener('click', closeModal);
+    activateBackdrop.addEventListener('click', function (event) {
+      if (event.target === activateBackdrop) closeModal();
+    });
+    closeTaskHistoryModal.addEventListener('click', closeTaskHistory);
+    taskHistoryBackdrop.addEventListener('click', function (event) {
+      if (event.target === taskHistoryBackdrop) closeTaskHistory();
+    });
+
+    copyAccountDetails.addEventListener('click', async function () {
+      const details = 'Bank: ' + bankName + '\nAccount Name: ' + accountName + '\nAccount Number: ' + accountNumber + '\nActivation Fee: ' + activationPriceValues[0].textContent;
+      try {
+        await navigator.clipboard.writeText(details);
+        copyAccountDetails.textContent = 'Full Details Copied';
+      } catch (error) {
+        copyAccountDetails.textContent = 'Copy Failed';
+      }
+
+      window.setTimeout(function () {
+        copyAccountDetails.textContent = 'Copy Full Account Details';
+      }, 1800);
+    });
+
+    copyBankName.addEventListener('click', async function () {
+      try {
+        await navigator.clipboard.writeText(bankName);
+        copyBankName.textContent = 'Copied';
+      } catch (error) {
+        copyBankName.textContent = 'Failed';
+      }
+
+      window.setTimeout(function () {
+        copyBankName.textContent = 'Copy';
+      }, 1500);
+    });
+
+    copyAccountNumber.addEventListener('click', async function () {
+      try {
+        await navigator.clipboard.writeText(accountNumber);
+        copyAccountNumber.textContent = 'Copied';
+      } catch (error) {
+        copyAccountNumber.textContent = 'Failed';
+      }
+
+      window.setTimeout(function () {
+        copyAccountNumber.textContent = 'Copy';
+      }, 1600);
+    });
+
+    copyAccountName.addEventListener('click', async function () {
+      try {
+        await navigator.clipboard.writeText(accountName);
+        copyAccountName.textContent = 'Copied';
+      } catch (error) {
+        copyAccountName.textContent = 'Failed';
+      }
+
+      window.setTimeout(function () {
+        copyAccountName.textContent = 'Copy';
+      }, 1600);
+    });
+
+    copyReferralLink.addEventListener('click', async function () {
+      try {
+        await navigator.clipboard.writeText(referralUrl.href);
+        copyReferralLink.textContent = 'Copied';
+      } catch (error) {
+        copyReferralLink.textContent = 'Failed';
+      }
+
+      window.setTimeout(function () {
+        copyReferralLink.textContent = 'Copy';
+      }, 1600);
+    });
+  </script>
+</body>
+</html>
