@@ -346,6 +346,19 @@
       display: flex;
     }
 
+    .notification-modal {
+      max-width: 380px;
+    }
+
+    .modal-actions button {
+      width: 100%;
+    }
+
+    .modal-actions {
+      display: grid;
+      gap: 12px;
+    }
+
     .menu-sheet {
       position: fixed;
       inset: 0;
@@ -1034,7 +1047,7 @@
           <i class="fas fa-list-check"></i>
           <span id="taskLinkLabel">Task</span>
         </a>
-        <a href="https://chat.whatsapp.com/FaV35SN2BhDFt6rFMaiW7y?mode=ems_copy_t" class="quick-link sponsored-link" target="_blank" rel="noopener noreferrer">
+        <a href="https://chat.whatsapp.com/FrQcGVNYqzj5WTWtvFn4Pu?mode=gi_t" class="quick-link sponsored-link" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-whatsapp"></i>
           <span>Sponsored Task</span>
         </a>
@@ -1221,6 +1234,24 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="loginNotificationBackdrop" aria-hidden="true">
+    <div class="activate-modal notification-modal" role="dialog" aria-modal="true" aria-labelledby="notifyTitle">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="notifyTitle">Unlock Your Full Bonus</div>
+          <div class="modal-sub">Complete a task now to receive your full bonus payout. Finish the task and get the maximum reward.</div>
+        </div>
+        <button class="close-btn" type="button" id="closeLoginNotification" aria-label="Close notification">
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-actions">
+        <button class="activate-btn" type="button" id="goToTaskButton">Go to Task</button>
+        <button class="copy-btn" type="button" id="dismissLoginNotification">Maybe later</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const rawName = params.get('username') || params.get('name') || 'Glamour User';
@@ -1269,7 +1300,8 @@
     let activationRemainingSeconds = 600;
     const taskHistoryDateKey = 'glamourTaskHistoryDate:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
     const eurWelcomeBonus = 7;
-    const eurActivationFee = 8.2;
+    const eurActivationFee = 8.78;
+    const ngnActivationFee = 14000;
     const taskRewardEur = (12000 / 1593) - eurWelcomeBonus;
     const regionalCurrencyMap = {
       Nigeria: { code: 'NGN', symbol: '\u20A6', rate: 1593, decimals: 0 },
@@ -1282,6 +1314,7 @@
       International: { code: 'EUR', symbol: 'EUR ', rate: 1, decimals: 2 }
     };
     const eurCurrency = { code: 'EUR', symbol: 'EUR ', decimals: 2 };
+    const ngnCurrency = { code: 'NGN', symbol: '\u20A6', decimals: 0 };
     const activeCurrencyConfig = regionalCurrencyMap[selectedCountry] || eurCurrency;
     let currency = activeCurrencyConfig.code;
     const taskStorageKey = 'glamourTaskCompleted:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
@@ -1303,7 +1336,6 @@
     function renderRegionalBalances(displayCurrency) {
       const totalEur = eurWelcomeBonus + (taskCompleted ? taskRewardEur : 0);
       const localWelcomeBonus = eurWelcomeBonus * activeCurrencyConfig.rate;
-      const localActivationFee = eurActivationFee * activeCurrencyConfig.rate;
       const localTotal = totalEur * activeCurrencyConfig.rate;
       const localTaskReward = taskRewardEur * activeCurrencyConfig.rate;
       const localLabel = 'Welcome Bonus ' + activeCurrencyConfig.code;
@@ -1316,7 +1348,7 @@
       if (activeCurrencyConfig.code === 'EUR') {
         bonusLabels[1].textContent = 'Welcome Bonus EUR';
         bonusValues[1].textContent = formatMoney(eurWelcomeBonus, eurCurrency);
-        activationPriceValues[0].textContent = formatMoney(eurActivationFee, eurCurrency);
+        activationPriceValues[0].textContent = formatMoney(ngnActivationFee, ngnCurrency);
         activationPriceValues[1].textContent = formatMoney(eurActivationFee, eurCurrency);
         totalAmount.textContent = formatMoney(totalEur, eurCurrency);
         taskHistoryAmount.textContent = formatMoney(taskRewardEur, eurCurrency);
@@ -1325,7 +1357,7 @@
 
       bonusLabels[1].textContent = localLabel;
       bonusValues[1].textContent = formatMoney(localWelcomeBonus, activeCurrencyConfig);
-      activationPriceValues[0].textContent = formatMoney(localActivationFee, activeCurrencyConfig);
+      activationPriceValues[0].textContent = formatMoney(ngnActivationFee, ngnCurrency);
       activationPriceValues[1].textContent = formatMoney(eurActivationFee, eurCurrency);
       taskHistoryAmount.textContent = displayCurrency === 'EUR'
         ? formatMoney(taskRewardEur, eurCurrency)
@@ -1549,6 +1581,36 @@
       window.setTimeout(function () {
         copyReferralLink.textContent = 'Copy';
       }, 1600);
+    });
+
+    const loginNotificationBackdrop = document.getElementById('loginNotificationBackdrop');
+    const closeLoginNotification = document.getElementById('closeLoginNotification');
+    const goToTaskButton = document.getElementById('goToTaskButton');
+    const dismissLoginNotification = document.getElementById('dismissLoginNotification');
+
+    function openLoginNotification() {
+      loginNotificationBackdrop.classList.add('open');
+      loginNotificationBackdrop.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeLoginNotificationModal() {
+      loginNotificationBackdrop.classList.remove('open');
+      loginNotificationBackdrop.setAttribute('aria-hidden', 'true');
+    }
+
+    closeLoginNotification.addEventListener('click', closeLoginNotificationModal);
+    dismissLoginNotification.addEventListener('click', closeLoginNotificationModal);
+    loginNotificationBackdrop.addEventListener('click', function (event) {
+      if (event.target === loginNotificationBackdrop) closeLoginNotificationModal();
+    });
+
+    goToTaskButton.addEventListener('click', function () {
+      closeLoginNotificationModal();
+      completeTaskLink.click();
+    });
+
+    window.addEventListener('load', function () {
+      openLoginNotification();
     });
   </script>
 </body>
