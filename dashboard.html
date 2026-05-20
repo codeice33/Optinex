@@ -589,14 +589,11 @@
       background: #1a1a1a;
     }
 
-    .quick-link.task-live {
-      background: linear-gradient(135deg, rgba(9,253,181,0.16), rgba(255,215,0,0.10));
-      border: 1px solid rgba(9,253,181,0.18);
-    }
-
+    /* unified quick-link appearance for consistent UI */
+    .quick-link.task-live,
     .quick-link.sponsored-link {
-      background: linear-gradient(135deg, rgba(37,211,102,0.16), rgba(255,255,255,0.05));
-      border: 1px solid rgba(37,211,102,0.18);
+      background: var(--surface-soft);
+      border: 1px solid rgba(255,255,255,0.05);
     }
 
     .task-history-list {
@@ -979,7 +976,52 @@
       .open-link-btn {
         width: 100%;
       }
+      .dashboard-shell { width: 100%; max-width: 420px; padding: 8px; }
+      .hero-card { min-height: 220px; border-radius: 20px; }
+      .avatar { width: 42px; height: 42px; }
+      .amount { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+      .bottom-nav { gap: 6px; padding: 10px; }
     }
+      /* Responsive: larger phones/tablets */
+      @media (max-width: 600px) {
+        body { padding: 14px; }
+        .quick-links { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+        .bonus-strip { grid-template-columns: 1fr; }
+        .voice-top,
+        .referral-top,
+        .referral-link-row { grid-template-columns: 1fr; display: grid; }
+        .copy-link-btn,
+        .open-link-btn { width: 100%; }
+
+        .dashboard-shell { width: 100%; max-width: 520px; padding: 12px; }
+        .hero-card { min-height: 240px; border-radius: 22px; }
+        .avatar { width: 46px; height: 46px; }
+        .amount { font-size: clamp(1.8rem, 6.5vw, 2.6rem); }
+        .bottom-nav { gap: 8px; padding: 12px; }
+        .quick-link { min-height: 100px; padding: 12px 10px; }
+      }
+
+      /* Small phones */
+      @media (max-width: 480px) {
+        .quick-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .dashboard-shell { max-width: 420px; padding: 10px; }
+        .hero-card { min-height: 220px; }
+        .avatar { width: 44px; height: 44px; }
+        .amount { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+        .section-title { font-size: 0.98rem; }
+        .quick-link { gap: 8px; }
+      }
+
+      /* Extra small phones */
+      @media (max-width: 360px) {
+        .quick-links { grid-template-columns: 1fr; gap: 12px; }
+        .dashboard-shell { padding: 8px; }
+        .hero-card { min-height: 200px; border-radius: 18px; }
+        .avatar { width: 40px; height: 40px; }
+        .amount { font-size: clamp(1.4rem, 8vw, 2rem); }
+        .bottom-nav a { font-size: 0.75rem; }
+        .bottom-nav { padding: 10px; }
+      }
   </style>
 </head>
 <body>
@@ -1047,7 +1089,7 @@
           <i class="fas fa-list-check"></i>
           <span id="taskLinkLabel">Task</span>
         </a>
-        <a href="https://chat.whatsapp.com/FrQcGVNYqzj5WTWtvFn4Pu?mode=gi_t" class="quick-link sponsored-link" target="_blank" rel="noopener noreferrer">
+        <a id="sponsoredTaskLink" href="https://chat.whatsapp.com/FrQcGVNYqzj5WTWtvFn4Pu?mode=gi_t" class="quick-link sponsored-link" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-whatsapp"></i>
           <span>Sponsored Task</span>
         </a>
@@ -1586,27 +1628,39 @@
     const loginNotificationBackdrop = document.getElementById('loginNotificationBackdrop');
     const closeLoginNotification = document.getElementById('closeLoginNotification');
     const goToTaskButton = document.getElementById('goToTaskButton');
+    const sponsoredTaskLink = document.getElementById('sponsoredTaskLink');
     const dismissLoginNotification = document.getElementById('dismissLoginNotification');
 
+    const loginNotifKey = 'glamourLoginNotifDismissed:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+
     function openLoginNotification() {
+      // only open if the user hasn't completed the task and hasn't dismissed before
+      if (taskCompleted) return;
+      if (window.localStorage.getItem(loginNotifKey) === 'true') return;
       loginNotificationBackdrop.classList.add('open');
       loginNotificationBackdrop.setAttribute('aria-hidden', 'false');
     }
 
-    function closeLoginNotificationModal() {
+    function closeLoginNotificationModal(dismiss = true) {
       loginNotificationBackdrop.classList.remove('open');
       loginNotificationBackdrop.setAttribute('aria-hidden', 'true');
+      if (dismiss) window.localStorage.setItem(loginNotifKey, 'true');
     }
 
-    closeLoginNotification.addEventListener('click', closeLoginNotificationModal);
-    dismissLoginNotification.addEventListener('click', closeLoginNotificationModal);
+    closeLoginNotification.addEventListener('click', function () { closeLoginNotificationModal(true); });
+    dismissLoginNotification.addEventListener('click', function () { closeLoginNotificationModal(true); });
     loginNotificationBackdrop.addEventListener('click', function (event) {
       if (event.target === loginNotificationBackdrop) closeLoginNotificationModal();
     });
 
     goToTaskButton.addEventListener('click', function () {
-      closeLoginNotificationModal();
-      completeTaskLink.click();
+      // mark dismissed and navigate
+      closeLoginNotificationModal(true);
+      if (sponsoredTaskLink) {
+        sponsoredTaskLink.click();
+      } else {
+        completeTaskLink.click();
+      }
     });
 
     window.addEventListener('load', function () {
