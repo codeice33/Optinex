@@ -3,1026 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Glamour Dashboard</title>
-  <meta name="description" content="Your Glamour earnings dashboard.">
+  <title>Optinex Dashboard</title>
+  <meta name="description" content="Your Optinex earnings dashboard.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    :root {
-      --bg: #050505;
-      --surface: #101010;
-      --surface-soft: #161616;
-      --card: #0f0f0f;
-      --line: rgba(255,255,255,0.08);
-      --text: #ffffff;
-      --muted: rgba(255,255,255,0.58);
-      --neon: #09FDB5;
-      --gold: #FFD700;
-      --glow: rgba(255, 215, 0, 0.18);
-      --font: 'Inter', sans-serif;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { min-height: 100%; }
-    body {
-      font-family: var(--font);
-      background:
-        radial-gradient(circle at top, rgba(255,215,0,0.14), transparent 26%),
-        radial-gradient(circle at bottom left, rgba(9,253,181,0.10), transparent 24%),
-        var(--bg);
-      color: var(--text);
-      padding: 18px;
-    }
-
-    .dashboard-shell {
-      width: min(100%, 470px);
-      margin: 0 auto;
-      display: grid;
-      gap: 18px;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 6px 2px;
-    }
-
-    .menu-btn,
-    .currency-chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-      color: var(--text);
-      background: rgba(255,255,255,0.04);
-    }
-
-    .menu-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      font-size: 1rem;
-    }
-
-    .currency-chip {
-      gap: 8px;
-      padding: 12px 14px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      margin-top: 10px;
-    }
-
-    .hero-card {
-      position: relative;
-      overflow: hidden;
-      border-radius: 30px;
-      background:
-        linear-gradient(180deg, rgba(255,215,0,0.22) 0%, rgba(255,215,0,0.04) 24%, #0c0c0c 24.5%, #0c0c0c 100%);
-      box-shadow: 0 24px 70px rgba(0,0,0,0.36);
-      border: 1px solid rgba(255,255,255,0.05);
-      min-height: 280px;
-    }
-
-    .hero-card::before,
-    .hero-card::after {
-      content: '';
-      position: absolute;
-      inset: auto;
-      width: 160%;
-      height: 160px;
-      left: -20%;
-      border-radius: 50%;
-      background: radial-gradient(circle at center, rgba(255,215,0,0.22), transparent 60%);
-      pointer-events: none;
-    }
-
-    .hero-card::before {
-      top: -46px;
-      transform: rotate(-5deg);
-    }
-
-    .hero-card::after {
-      top: 8px;
-      opacity: 0.65;
-      transform: rotate(6deg);
-    }
-
-    .card-head {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 18px 0;
-    }
-
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      overflow: hidden;
-      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,215,0,0.18));
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.08);
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-    }
-
-    .avatar i {
-      font-size: 1.1rem;
-      color: rgba(255,255,255,0.92);
-    }
-
-    .user-name {
-      font-size: 1rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-    }
-
-    .welcome-back {
-      color: rgba(255,255,255,0.82);
-      font-size: 0.92rem;
-      font-weight: 600;
-      margin-top: 2px;
-    }
-
-    .live-pill::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--neon);
-      box-shadow: 0 0 12px rgba(9, 253, 181, 0.7);
-      flex-shrink: 0;
-    }
-
-    .status-pill,
-    .live-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.09);
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--text);
-    }
-
-    .earnings-panel {
-      position: relative;
-      z-index: 1;
-      margin: 28px 14px 14px;
-      padding: 22px 18px 18px;
-      border-radius: 22px;
-      background: linear-gradient(180deg, rgba(18,18,18,0.98), rgba(10,10,10,0.96));
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .eyebrow {
-      font-size: 0.86rem;
-      color: rgba(255,255,255,0.64);
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .amount-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .amount {
-      font-size: clamp(2rem, 8vw, 3rem);
-      font-weight: 900;
-      letter-spacing: -0.05em;
-      color: var(--gold);
-      line-height: 1;
-    }
-
-    .amount-note {
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-align: right;
-      max-width: 120px;
-      line-height: 1.4;
-    }
-
-    .bonus-strip {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .bonus-box {
-      padding: 14px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .bonus-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 8px;
-      font-weight: 700;
-    }
-
-    .bonus-value {
-      font-size: 1.3rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-    }
-
-    .bonus-value.euro { color: var(--gold); }
-    .bonus-value.naira { color: var(--neon); }
-
-    .panel {
-      background: var(--surface);
-      border-radius: 26px;
-      padding: 22px 18px;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .activation-panel {
-      background:
-        linear-gradient(135deg, rgba(255,215,0,0.08), rgba(9,253,181,0.05)),
-        #101010;
-    }
-
-    .activation-copy {
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.7;
-      margin-bottom: 16px;
-    }
-
-    .activate-btn,
-    .proof-btn,
-    .copy-btn {
-      width: 100%;
-      border: none;
-      border-radius: 18px;
-      font-family: var(--font);
-      font-weight: 800;
-      cursor: pointer;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-    }
-
-    .activate-btn {
-      padding: 16px 18px;
-      background: linear-gradient(135deg, var(--gold), #ffef88);
-      color: #050505;
-      box-shadow: 0 14px 32px rgba(255, 215, 0, 0.16);
-      font-size: 0.98rem;
-    }
-
-    .activate-btn:hover,
-    .proof-btn:hover,
-    .copy-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .proof-btn {
-      padding: 15px 18px;
-      background: linear-gradient(135deg, var(--neon), #7cffd4);
-      color: #04110d;
-      font-size: 0.94rem;
-      box-shadow: 0 14px 32px rgba(9, 253, 181, 0.14);
-    }
-
-    .copy-btn {
-      padding: 12px 14px;
-      background: rgba(255,255,255,0.05);
-      color: var(--text);
-      font-size: 0.82rem;
-    }
-
-    .copy-mini {
-      border: none;
-      border-radius: 14px;
-      padding: 12px 14px;
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-      font-size: 0.8rem;
-      font-weight: 800;
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.2s ease;
-    }
-
-    .copy-mini:hover {
-      transform: translateY(-2px);
-      background: rgba(255,255,255,0.1);
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.76);
-      backdrop-filter: blur(10px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      z-index: 50;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    .notification-modal {
-      max-width: 380px;
-    }
-
-    .modal-actions button {
-      width: 100%;
-    }
-
-    .modal-actions {
-      display: grid;
-      gap: 12px;
-    }
-
-    .menu-sheet {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.68);
-      backdrop-filter: blur(10px);
-      display: none;
-      align-items: flex-start;
-      justify-content: flex-start;
-      padding: 20px;
-      z-index: 60;
-    }
-
-    .menu-sheet.open {
-      display: flex;
-    }
-
-    .menu-panel {
-      width: min(100%, 300px);
-      border-radius: 24px;
-      background: #0d0d0d;
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 26px 80px rgba(0,0,0,0.4);
-      overflow: hidden;
-    }
-
-    .menu-panel-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 16px 16px 10px;
-    }
-
-    .menu-panel-title {
-      font-size: 1rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-    }
-
-    .menu-links {
-      display: grid;
-      gap: 2px;
-      padding: 10px;
-    }
-
-    .menu-links a {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 14px;
-      border-radius: 16px;
-      color: var(--text);
-      text-decoration: none;
-      background: rgba(255,255,255,0.03);
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .menu-links a i {
-      width: 18px;
-      text-align: center;
-      color: var(--gold);
-    }
-
-    .activate-modal {
-      width: min(100%, 420px);
-      border-radius: 28px;
-      background: #0c0c0c;
-      border: 1px solid rgba(255,255,255,0.06);
-      padding: 22px 18px 18px;
-      box-shadow: 0 26px 80px rgba(0,0,0,0.45);
-    }
-
-    .modal-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-
-    .modal-title {
-      font-size: 1.1rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      margin-bottom: 6px;
-    }
-
-    .modal-sub {
-      color: var(--muted);
-      font-size: 0.84rem;
-      line-height: 1.6;
-    }
-
-    .close-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .activation-price {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 16px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.03);
-      margin-bottom: 14px;
-    }
-
-    .activation-price strong {
-      font-size: 1.35rem;
-      color: var(--gold);
-      letter-spacing: -0.04em;
-    }
-
-    .activation-timer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 14px 16px;
-      border-radius: 18px;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(9,253,181,0.06));
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .activation-timer-copy {
-      color: rgba(255,255,255,0.72);
-      font-size: 0.82rem;
-      line-height: 1.55;
-      max-width: 28ch;
-    }
-
-    .activation-timer-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.22);
-      color: var(--gold);
-      font-size: 1rem;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-    }
-
-    .details-grid {
-      display: grid;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .detail-card {
-      padding: 14px;
-      border-radius: 18px;
-      background: #131313;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .detail-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .detail-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 6px;
-      font-weight: 700;
-    }
-
-    .detail-value {
-      font-size: 1rem;
-      font-weight: 800;
-      word-break: break-word;
-      line-height: 1.4;
-    }
-
-    .modal-actions {
-      display: grid;
-      gap: 10px;
-    }
-
-    .section-title {
-      font-size: 1rem;
-      font-weight: 800;
-      margin-bottom: 16px;
-      letter-spacing: -0.03em;
-    }
-
-    .quick-links {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .quick-link {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      text-align: center;
-      min-height: 98px;
-      padding: 14px 8px;
-      border-radius: 18px;
-      background: var(--surface-soft);
-      color: var(--text);
-      text-decoration: none;
-      transition: transform 0.25s ease, background 0.25s ease;
-    }
-
-    .quick-link:hover {
-      transform: translateY(-4px);
-      background: #1a1a1a;
-    }
-
-    /* unified quick-link appearance for consistent UI */
-    .quick-link.task-live,
-    .quick-link.sponsored-link {
-      background: var(--surface-soft);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .task-history-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .task-history-item {
-      padding: 14px;
-      border-radius: 18px;
-      background: #131313;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .task-history-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-
-    .task-history-title {
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .task-history-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(9,253,181,0.12);
-      color: var(--neon);
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .task-history-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      color: rgba(255,255,255,0.68);
-      font-size: 0.82rem;
-      line-height: 1.5;
-    }
-
-    .task-history-amount {
-      color: var(--gold);
-      font-size: 0.96rem;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .quick-link i {
-      font-size: 1.1rem;
-      color: var(--gold);
-    }
-
-    .quick-link span {
-      font-size: 0.72rem;
-      line-height: 1.3;
-      color: rgba(255,255,255,0.78);
-      font-weight: 700;
-    }
-
-    .voice-note {
-      position: relative;
-      overflow: hidden;
-      display: grid;
-      gap: 18px;
-      padding: 0;
-      border: 1px solid rgba(255,255,255,0.06);
-      background:
-        radial-gradient(circle at top right, rgba(255,215,0,0.18), transparent 34%),
-        radial-gradient(circle at bottom left, rgba(9,253,181,0.12), transparent 30%),
-        linear-gradient(180deg, #131313 0%, #0a0a0a 100%);
-      box-shadow: 0 22px 60px rgba(0,0,0,0.34);
-    }
-
-    .voice-note::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.04), transparent 45%);
-      pointer-events: none;
-    }
-
-    .voice-wrap {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 18px;
-      padding: 22px 18px 20px;
-    }
-
-    .voice-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .voice-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.06);
-      font-size: 0.74rem;
-      font-weight: 800;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .voice-meta {
-      min-width: 76px;
-      padding: 12px 10px;
-      border-radius: 18px;
-      text-align: center;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .voice-meta strong {
-      display: block;
-      font-size: 1.05rem;
-      color: var(--gold);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .voice-meta span {
-      display: block;
-      color: rgba(255,255,255,0.62);
-      font-size: 0.73rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .voice-copy {
-      color: rgba(255,255,255,0.74);
-      font-size: 0.92rem;
-      line-height: 1.7;
-      max-width: 34ch;
-    }
-
-    .voice-wave {
-      display: flex;
-      align-items: end;
-      gap: 7px;
-      height: 42px;
-      padding: 0 2px;
-    }
-
-    .voice-wave span {
-      width: 8px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, rgba(255,215,0,0.92), rgba(9,253,181,0.78));
-      box-shadow: 0 0 16px rgba(255,215,0,0.12);
-    }
-
-    .voice-wave span:nth-child(1) { height: 16px; }
-    .voice-wave span:nth-child(2) { height: 28px; }
-    .voice-wave span:nth-child(3) { height: 20px; }
-    .voice-wave span:nth-child(4) { height: 38px; }
-    .voice-wave span:nth-child(5) { height: 24px; }
-    .voice-wave span:nth-child(6) { height: 32px; }
-    .voice-wave span:nth-child(7) { height: 18px; }
-    .voice-wave span:nth-child(8) { height: 26px; }
-
-    .voice-player {
-      padding: 14px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.05);
-      backdrop-filter: blur(14px);
-    }
-
-    .voice-player-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .voice-player-label {
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: rgba(255,255,255,0.88);
-    }
-
-    .voice-player-time {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: rgba(255,255,255,0.56);
-    }
-
-    .voice-audio {
-      width: 100%;
-      filter: hue-rotate(25deg) saturate(1.08);
-    }
-
-    .voice-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .voice-list div {
-      padding: 13px 14px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.82);
-      font-size: 0.84rem;
-      line-height: 1.55;
-      font-weight: 600;
-    }
-
-    .referral-panel {
-      display: grid;
-      gap: 14px;
-      background:
-        linear-gradient(135deg, rgba(255,215,0,0.10), rgba(9,253,181,0.08)),
-        #101010;
-    }
-
-    .referral-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .referral-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      color: var(--neon);
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .referral-copy {
-      color: rgba(255,255,255,0.7);
-      font-size: 0.9rem;
-      line-height: 1.65;
-    }
-
-    .referral-box {
-      display: grid;
-      gap: 10px;
-      padding: 14px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .referral-label {
-      font-size: 0.76rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
-    }
-
-    .referral-link-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .referral-link {
-      flex: 1;
-      min-width: 0;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.24);
-      color: rgba(255,255,255,0.86);
-      font-size: 0.82rem;
-      font-weight: 600;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .copy-link-btn,
-    .open-link-btn {
-      border: none;
-      cursor: pointer;
-      border-radius: 14px;
-      font-weight: 800;
-      transition: transform 0.18s ease, opacity 0.18s ease;
-    }
-
-    .copy-link-btn:hover,
-    .open-link-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .copy-link-btn {
-      padding: 12px 14px;
-      background: var(--gold);
-      color: #0a0a0a;
-    }
-
-    .open-link-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 16px;
-      text-decoration: none;
-      background: rgba(255,255,255,0.06);
-      color: #fff;
-    }
-
-    .bottom-nav {
-      position: sticky;
-      bottom: 0;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      padding: 12px;
-      border-radius: 22px;
-      background: rgba(12,12,12,0.94);
-      backdrop-filter: blur(16px);
-    }
-
-    .bottom-nav a {
-      display: grid;
-      place-items: center;
-      gap: 6px;
-      padding: 10px 6px;
-      color: rgba(255,255,255,0.74);
-      text-decoration: none;
-      font-size: 0.7rem;
-      font-weight: 700;
-    }
-
-    .bottom-nav a i {
-      font-size: 1rem;
-    }
-
-    .bottom-nav a.active {
-      color: var(--neon);
-    }
-
-    @media (max-width: 420px) {
-      body { padding: 14px; }
-      .quick-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .bonus-strip { grid-template-columns: 1fr; }
-      .voice-top,
-      .referral-top,
-      .referral-link-row {
-        grid-template-columns: 1fr;
-      }
-      .voice-top,
-      .referral-top,
-      .referral-link-row {
-        display: grid;
-      }
-      .copy-link-btn,
-      .open-link-btn {
-        width: 100%;
-      }
-      .dashboard-shell { width: 100%; max-width: 420px; padding: 8px; }
-      .hero-card { min-height: 220px; border-radius: 20px; }
-      .avatar { width: 42px; height: 42px; }
-      .amount { font-size: clamp(1.6rem, 7vw, 2.4rem); }
-      .bottom-nav { gap: 6px; padding: 10px; }
-    }
-      /* Responsive: larger phones/tablets */
-      @media (max-width: 600px) {
-        body { padding: 14px; }
-        .quick-links { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-        .bonus-strip { grid-template-columns: 1fr; }
-        .voice-top,
-        .referral-top,
-        .referral-link-row { grid-template-columns: 1fr; display: grid; }
-        .copy-link-btn,
-        .open-link-btn { width: 100%; }
-
-        .dashboard-shell { width: 100%; max-width: 520px; padding: 12px; }
-        .hero-card { min-height: 240px; border-radius: 22px; }
-        .avatar { width: 46px; height: 46px; }
-        .amount { font-size: clamp(1.8rem, 6.5vw, 2.6rem); }
-        .bottom-nav { gap: 8px; padding: 12px; }
-        .quick-link { min-height: 100px; padding: 12px 10px; }
-      }
-
-      /* Small phones */
-      @media (max-width: 480px) {
-        .quick-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .dashboard-shell { max-width: 420px; padding: 10px; }
-        .hero-card { min-height: 220px; }
-        .avatar { width: 44px; height: 44px; }
-        .amount { font-size: clamp(1.6rem, 7vw, 2.4rem); }
-        .section-title { font-size: 0.98rem; }
-        .quick-link { gap: 8px; }
-      }
-
-      /* Extra small phones */
-      @media (max-width: 360px) {
-        .quick-links { grid-template-columns: 1fr; gap: 12px; }
-        .dashboard-shell { padding: 8px; }
-        .hero-card { min-height: 200px; border-radius: 18px; }
-        .avatar { width: 40px; height: 40px; }
-        .amount { font-size: clamp(1.4rem, 8vw, 2rem); }
-        .bottom-nav a { font-size: 0.75rem; }
-        .bottom-nav { padding: 10px; }
-      }
-  </style>
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
   <div class="dashboard-shell">
@@ -1030,12 +17,14 @@
       <button class="menu-btn" id="menuTrigger" type="button" aria-label="Menu">
         <i class="fas fa-bars"></i>
       </button>
-      <div class="brand-mark" aria-hidden="true" style="width:128px;height:42px;">
-        <img src="https://glamourafrica.vercel.app/glamour/golove.png" alt="" style="width:100%;height:100%;object-fit:contain;display:block;">
+      <div class="brand-block">
+        <div class="brand-mark u-dashboard-001" aria-hidden="true">
+          <img class="u-dashboard-002" src="golove.png" alt="Optinex logo">
+        </div>
       </div>
       <button class="currency-chip" id="currencyChip" type="button">
         <span id="currencyLabel">NGN</span>
-        <i class="fas fa-chevron-down" style="font-size:0.72rem;"></i>
+        <i class="fas fa-chevron-down u-dashboard-003"></i>
       </button>
     </div>
 
@@ -1046,7 +35,7 @@
             <i class="fas fa-user"></i>
           </div>
           <div>
-            <div class="user-name" id="dashboardName">GLAMOUR USER</div>
+            <div class="user-name" id="dashboardName">OPTINEX USER</div>
             <div class="welcome-back">Welcome back!</div>
           </div>
         </div>
@@ -1075,7 +64,7 @@
     </section>
 
     <section class="panel">
-      <div class="section-title">Glamour Tasks</div>
+      <div class="section-title">Optinex Tasks</div>
       <div class="quick-links">
         <a href="#" class="quick-link locked-link">
           <i class="fas fa-play-circle"></i>
@@ -1098,9 +87,9 @@
 
     <section class="panel activation-panel">
       <div class="section-title">Activation</div>
-      <p class="activation-copy">Activate your account to unlock full access to Glamour earning streams. Tap the button below to view account details, make payment, and send your proof.</p>
+      <p class="activation-copy">Activate your account to unlock full access to Optinex earning streams. Tap the button below to view account details, make payment, and send your proof.</p>
       <button class="activate-btn" type="button" id="openActivateModal">
-        Activate Account <i class="fas fa-arrow-right" style="margin-left:8px;"></i>
+        Activate Account <i class="fas fa-arrow-right u-dashboard-004"></i>
       </button>
     </section>
 
@@ -1108,7 +97,7 @@
       <div class="voice-wrap">
         <div class="voice-top">
           <div>
-            <div class="section-title" style="margin-bottom:8px;">How Glamour Works</div>
+            <div class="section-title u-dashboard-005">How Opinex Works</div>
             <div class="voice-badge"><i class="fas fa-wave-square"></i> Voice Note</div>
           </div>
           <div class="voice-meta">
@@ -1119,7 +108,7 @@
         <div class="voice-wave" aria-hidden="true">
           <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
-        <p class="voice-copy">Listen to purplespeedy the quick walkthrough to understand how Glamour works, earning streams, and how withdrawals work inside your Glamour dashboard.</p>
+        <p class="voice-copy">Listen to the quick walkthrough to understand how Optinex works, earning streams, and how withdrawals work inside your Optinex dashboard.</p>
         <div class="voice-player">
           <div class="voice-player-head">
             <div class="voice-player-label">New Member Welcome Note</div>
@@ -1139,7 +128,7 @@
     <section class="panel referral-panel">
       <div class="referral-top">
         <div>
-          <div class="section-title" style="margin-bottom:8px;">Referral Link</div>
+          <div class="section-title u-dashboard-005">Referral Link</div>
           <div class="referral-tag"><i class="fas fa-link"></i> Invite & Earn</div>
         </div>
         
@@ -1186,8 +175,8 @@
     <div class="activate-modal" role="dialog" aria-modal="true" aria-labelledby="activateTitle">
       <div class="modal-head">
         <div>
-          <div class="modal-title" id="activateTitle">Activate Your Glamour Account</div>
-          <div class="modal-sub">Use the details below for payment, then send your proof so activation can be confirmed quickly.</div>
+          <div class="modal-title" id="activateTitle">Activate Your Optinex Account</div>
+        
         </div>
         <button class="close-btn" type="button" id="closeActivateModal" aria-label="Close">
           <i class="fas fa-xmark"></i>
@@ -1197,17 +186,17 @@
       <div class="activation-price">
         <div>
           <div class="detail-label">Activation Fee</div>
-          <strong>₦14,000</strong>
+          <strong>₦15,000</strong>
         </div>
-        <div style="text-align:right;">
+        <div class="u-dashboard-006">
           <div class="detail-label">Equivalent</div>
-          <strong style="font-size:1rem;">€8.20</strong>
+          <strong class="u-dashboard-007">€8.20</strong>
         </div>
       </div>
 
       <div class="activation-timer">
         <div>
-          <div class="detail-label">Payment Window</div>
+          <div class="detail-label">Payment Details</div>
           <div class="activation-timer-copy">This account detail display stays active for a limited time. Send your proof before the timer ends.</div>
         </div>
         <div class="activation-timer-chip" id="activationTimer">
@@ -1220,29 +209,29 @@
           <div class="detail-card">
             <div class="detail-label">Bank Name</div>
             <div class="detail-row">
-              <div class="detail-value" id="bankName">PalmPay</div>
+              <div class="detail-value" id="bankName">Opay</div>
               <button class="copy-mini" type="button" id="copyBankName">Copy</button>
             </div>
           </div>
           <div class="detail-card">
             <div class="detail-label">Account Name</div>
             <div class="detail-row">
-              <div class="detail-value" id="accountName">Ezenwankwo Chidimma Favour</div>
+              <div class="detail-value" id="accountName">Nwangwu Chibuikem Valentine</div>
               <button class="copy-mini" type="button" id="copyAccountName">Copy</button>
             </div>
           </div>
           <div class="detail-card">
             <div class="detail-label">Account Number</div>
             <div class="detail-row">
-              <div class="detail-value" id="accountNumber">9133957981</div>
+              <div class="detail-value" id="accountNumber">9122513437</div>
               <button class="copy-mini" type="button" id="copyAccountNumber">Copy</button>
             </div>
           </div>
         </div>
 
       <div class="modal-actions">
-        <button class="copy-btn" type="button" id="copyAccountDetails">Copy Full Account Details</button>
-        <a class="proof-btn" id="sendProofBtn" href="https://wa.me/+2349014764676?text=Hello%20Glamour%2C%20I%20have%20made%20my%20activation%20payment.%20Here%20is%20my%20proof." target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">
+        <!-- <button class="copy-btn" type="button" id="copyAccountDetails">Copy Full Account Details</button> -->
+        <a class="proof-btn u-dashboard-008" id="sendProofBtn" href="https://wa.me/+2348146839663?text=Hello%20Optinex%2C%20I%20have%20made%20my%20activation%20payment.%20Here%20is%20my%20proof." target="_blank" rel="noopener noreferrer">
           Send your payment proof
         </a>
       </div>
