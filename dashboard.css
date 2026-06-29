@@ -1075,8 +1075,10 @@ body {
 .profile {
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 10px;
   min-width: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 100px;
 }
 
 .avatar {
@@ -1143,8 +1145,8 @@ body {
 }
 
 .menu-btn {
-  width: 58px;
-  height: 58px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: rgba(20, 153, 230, 0.08);
   color: var(--dash-text);
@@ -1160,15 +1162,15 @@ body {
 
 .withdraw-chip {
   border: 0;
-  border-radius: 999px;
+  border-radius: 990px;
   padding: 12px 18px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   background: rgba(232, 191, 90, 0.22);
   color: #061221;
   border: 1px solid rgba(232, 191, 90, 0.32);
   font: inherit;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
 }
 
@@ -1177,7 +1179,7 @@ body {
   align-items: center;
   gap: 8px;
   color: var(--dash-text);
-  font-size: 1.35rem;
+  font-size: 1.20rem;
   font-weight: 500;
   margin-bottom: 16px;
 }
@@ -1656,8 +1658,8 @@ body {
 
   .avatar,
   .menu-btn {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
   }
 
   .revenue-head {
