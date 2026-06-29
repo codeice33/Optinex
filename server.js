@@ -136,31 +136,12 @@ app.post('/api/register', async (req, res) => {
   res.status(201).json({ ok: true, user: { username, email, country } });
 });
 
-async function getCollection() {
-  if (!mongoUri) {
-    throw new Error("MONGODB_URI is missing");
+app.post('/api/dashboard/state', async (req, res) => {
+  const collection = await getCollection().catch(() => null);
+  if (!collection) {
+    res.json({ ok: true, database: 'not_configured' });
+    return;
   }
-
-  if (!client) {
-    try {
-      client = new MongoClient(mongoUri);
-      await client.connect();
-
-      const db = client.db(dbName);
-      dashboardStates = db.collection("dashboardStates");
-      users = db.collection("users");
-
-      await dashboardStates.createIndex({ username: 1, country: 1 }, { unique: true });
-      await users.createIndex({ username: 1 }, { unique: true });
-      await users.createIndex({ email: 1 }, { unique: true });
-    } catch (err) {
-      console.error("MongoDB connection error:", err);
-      throw err;
-    }
-  }
-
-  return dashboardStates;
-}
 
   const key = normalizeKey(req.body.username, req.body.country);
   if (!key.username) {
