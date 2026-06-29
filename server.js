@@ -80,7 +80,7 @@ app.get('/api/health', async (req, res) => {
     ok: true,
     database: collection ? 'connected' : 'not_configured'
   });
-});
+
 
 app.get('/api/dashboard/state', async (req, res) => {
   const collection = await getCollection().catch(() => null);
