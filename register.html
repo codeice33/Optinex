@@ -169,13 +169,40 @@
       }
     });
 
-    document.getElementById('registerForm').addEventListener('submit', function(event) {
+    document.getElementById('registerForm').addEventListener('submit', async function(event) {
       event.preventDefault();
       if (!this.reportValidity()) return;
 
+      const submitButton = this.querySelector('button[type="submit"]');
       const username = this.querySelector('input[name="username"]').value.trim() || 'GlamourUser';
       const country = this.querySelector('select[name="country"]').value || 'Nigeria';
-      window.location.href = 'dashboard.html?username=' + encodeURIComponent(username) + '&country=' + encodeURIComponent(country);
+      const formData = new FormData(this);
+      const payload = Object.fromEntries(formData.entries());
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.innerHTML = 'Creating Account <i class="fas fa-spinner fa-spin"></i>';
+      }
+
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(result.error || 'Registration failed');
+        }
+
+        window.location.href = 'dashboard.html?username=' + encodeURIComponent(username) + '&country=' + encodeURIComponent(country);
+      } catch (error) {
+        alert(error.message || 'Registration failed. Please try again.');
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.innerHTML = 'Create Account <i class="fas fa-arrow-right"></i>';
+        }
+      }
     });
 
     const registerParams = new URLSearchParams(window.location.search);

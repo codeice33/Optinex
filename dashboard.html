@@ -13,20 +13,168 @@
 </head>
 <body>
   <div class="dashboard-shell">
-    <div class="topbar">
-      <button class="menu-btn" id="menuTrigger" type="button" aria-label="Menu">
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="brand-block">
-        <div class="brand-mark u-dashboard-001" aria-hidden="true">
-          <img class="u-dashboard-002" src="golove.png" alt="Optinex logo">
+    <section class="dashboard-home">
+      <header class="app-header">
+        <div class="profile">
+          <div class="avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="profile-copy">
+            <div class="welcome-back">Welcome back!</div>
+            <button class="name-chip" id="currencyChip" type="button">
+              <span id="dashboardName">OPTINEX USER</span>
+              <i class="fas fa-caret-down" aria-hidden="true"></i>
+              <span class="sr-only" id="currencyLabel">NGN</span>
+            </button>
+          </div>
+        </div>
+        <button class="menu-btn" id="menuTrigger" type="button" aria-label="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </header>
+
+      <div class="revenue-head">
+        <div>
+          <button class="withdraw-chip" type="button" id="openActivateModal">Withdraw Signup Fee</button>
+          <div class="metric-label">Total Revenue <i class="fas fa-chevron-down" aria-hidden="true"></i></div>
+          <div class="amount" id="totalAmount">₦8,000</div>
+        </div>
+        <div class="streak-card">
+          <div>Article Streak</div>
+          <i class="fas fa-fire-flame-curved" aria-hidden="true"></i>
+          <strong>Days: <span id="articleStreakDays">0</span></strong>
         </div>
       </div>
-      <button class="currency-chip" id="currencyChip" type="button">
-        <span id="currencyLabel">NGN</span>
-        <i class="fas fa-chevron-down u-dashboard-003"></i>
-      </button>
-    </div>
+
+      <div class="status-pill">NGN</div>
+      <div class="bonus-strip" aria-hidden="true">
+        <div class="bonus-box">
+          <div class="bonus-label">Welcome Bonus EUR</div>
+          <div class="bonus-value euro">€7</div>
+        </div>
+        <div class="bonus-box">
+          <div class="bonus-label">Welcome Bonus NGN</div>
+          <div class="bonus-value naira">₦8,000</div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <section class="personal-revenue-card">
+          <div class="revenue-card-top">
+            <div>
+              <div class="card-brand">OPTINEX</div>
+              <div class="personal-label" id="revenueInfoTitle">Your Personal Revenue info</div>
+            </div>
+            <div class="card-chip" aria-hidden="true"><span></span><span></span></div>
+          </div>
+          <div class="personal-amount" id="personalRevenueAmount">₦0</div>
+          
+          <div class="revenue-card-bottom">
+            <span>OXN REVENUE</span>
+            <strong id="revenueCardCode">**** 2026</strong>
+          </div>
+        </section>
+
+        <div class="action-grid">
+          <a href="#" class="action-tile" id="openPaymentsAction">
+            <i class="fas fa-building-columns"></i>
+            <span>Payments</span>
+          </a>
+          <a href="#" class="action-tile task-live" id="completeTaskLink">
+            <i class="far fa-newspaper"></i>
+            <span id="taskLinkLabel">Articles</span>
+          </a>
+          <a href="#" class="action-tile" id="openStocksAction">
+            <i class="fas fa-sliders"></i>
+            <span>Stocks</span>
+          </a>
+        </div>
+      </div>
+
+      <section class="dashboard-section">
+        <div class="dashboard-section-head">
+          <div>
+            <div class="section-kicker">Optinex Features</div>
+            <h2>Income streams</h2>
+          </div>
+          <span id="featureProgress">Activate account</span>
+        </div>
+        <div class="feature-grid" id="featureGrid">
+          <button class="feature-card" type="button" data-feature="idea">
+            <span class="lock-badge"><i class="fas fa-lock"></i></span>
+            <i class="fas fa-camera-retro"></i>
+            <strong>Idea Vault</strong>
+            <span>Submit smart ideas and strategies.</span>
+          </button>
+          <button class="feature-card" type="button" data-feature="bnpl">
+            <span class="lock-badge"><i class="fas fa-lock"></i></span>
+            <i class="fas fa-cart-shopping"></i>
+            <strong>BNPL</strong>
+            <span>Upgrade with Buy Now Pay Later.</span>
+          </button>
+          <button class="feature-card" type="button" data-feature="review">
+            <span class="lock-badge"><i class="fas fa-lock"></i></span>
+            <i class="fas fa-stopwatch"></i>
+            <strong>Review X</strong>
+            <span>Test products and drop insight.</span>
+          </button>
+          <button class="feature-card" type="button" data-feature="connect">
+            <span class="lock-badge"><i class="fas fa-lock"></i></span>
+            <i class="fas fa-video"></i>
+            <strong>Connect</strong>
+            <span>Build global connections.</span>
+          </button>
+          <button class="feature-card" type="button" data-feature="bonus">
+            <span class="lock-badge"><i class="fas fa-lock"></i></span>
+            <i class="fas fa-gift"></i>
+            <strong>Bonus Drop</strong>
+            <span>Unlock random rewards.</span>
+          </button>
+          <button class="feature-card" type="button" data-feature="iq">
+            <span class="lock-badge"><i class="fas fa-lock"></i></span>
+            <i class="fas fa-brain"></i>
+            <strong>IQ Test</strong>
+            <span>Answer riddles and earn daily.</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="dashboard-section">
+        <div class="dashboard-section-head">
+          <div>
+            <div class="section-kicker">Operations</div>
+            <h2>Account tools</h2>
+          </div>
+        </div>
+        <div class="tool-list">
+          <button class="tool-row" type="button" id="openReferralTool">
+            <i class="fas fa-link"></i>
+            <span><strong>Referral Hub</strong><small>Copy your signup link and invite earners.</small></span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <button class="tool-row" type="button" id="openTaskTool">
+            <i class="fas fa-list-check"></i>
+            <span><strong>Task Center</strong><small>Complete articles, reviews, and sponsored jobs.</small></span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <button class="tool-row" type="button" id="openPayoutTool">
+            <i class="fas fa-wallet"></i>
+            <span><strong>Payout Desk</strong><small>Activation, withdrawal status, and payment proof.</small></span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <section class="dashboard-section activity-section">
+        <div class="dashboard-section-head">
+          <div>
+            <div class="section-kicker">Live Feed</div>
+            <h2>Recent activity</h2>
+          </div>
+        </div>
+        <div class="activity-list" id="activityList"></div>
+      </section>
+    </section>
 
     <section class="hero-card">
       <div class="card-head">
@@ -35,7 +183,7 @@
             <i class="fas fa-user"></i>
           </div>
           <div>
-            <div class="user-name" id="dashboardName">OPTINEX USER</div>
+            <div class="user-name">OPTINEX USER</div>
             <div class="welcome-back">Welcome back!</div>
           </div>
         </div>
@@ -45,7 +193,7 @@
       <div class="earnings-panel">
         <div class="eyebrow">Total Earnings</div>
         <div class="amount-row">
-          <div class="amount" id="totalAmount">₦12,000</div>
+          <div class="amount">₦12,000</div>
           <div class="amount-note">
             <span class="live-pill">Live</span>
           </div>
@@ -74,11 +222,11 @@
           <i class="fas fa-headphones"></i>
           <span>Stream & Earn</span>
         </a>
-        <a href="#" class="quick-link task-live" id="completeTaskLink">
+        <a href="#" class="quick-link task-live">
           <i class="fas fa-list-check"></i>
-          <span id="taskLinkLabel">Task</span>
+          <span>Task</span>
         </a>
-        <a id="sponsoredTaskLink" href="https://chat.whatsapp.com/FrQcGVNYqzj5WTWtvFn4Pu?mode=gi_t" class="quick-link sponsored-link" target="_blank" rel="noopener noreferrer">
+        <a href="https://chat.whatsapp.com/FrQcGVNYqzj5WTWtvFn4Pu?mode=gi_t" class="quick-link sponsored-link" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-whatsapp"></i>
           <span>Sponsored Task</span>
         </a>
@@ -88,7 +236,7 @@
     <section class="panel activation-panel">
       <div class="section-title">Activation</div>
       <p class="activation-copy">Activate your account to unlock full access to Optinex earning streams. Tap the button below to view account details, make payment, and send your proof.</p>
-      <button class="activate-btn" type="button" id="openActivateModal">
+      <button class="activate-btn" type="button" id="panelActivateBtn">
         Activate Account <i class="fas fa-arrow-right u-dashboard-004"></i>
       </button>
     </section>
@@ -147,9 +295,9 @@
     </section>
 
     <nav class="bottom-nav">
-      <a href="#" class="active"><i class="fas fa-house"></i><span>Home</span></a>
+      <a href="#" class="active" id="homeTrigger"><i class="fas fa-house"></i><span>Home</span></a>
       <a href="#" id="withdrawTrigger"><i class="fas fa-money-bill-wave"></i><span>Withdraw</span></a>
-      <a href="#"><i class="fas fa-chart-column"></i><span>Earnings</span></a>
+      <a href="#" id="earningsTrigger"><i class="fas fa-chart-column"></i><span>Earnings</span></a>
       <a href="index.html"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
     </nav>
   </div>
@@ -163,7 +311,7 @@
         </button>
       </div>
       <div class="menu-links">
-        <a href="#"><i class="fas fa-house"></i><span>Home</span></a>
+        <a href="#" id="menuHome"><i class="fas fa-house"></i><span>Home</span></a>
         <a href="#" id="menuWithdraw"><i class="fas fa-money-bill-wave"></i><span>Withdraw</span></a>
         <a href="#" id="menuEarnings"><i class="fas fa-chart-column"></i><span>Earnings</span></a>
         <a href="index.html"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
@@ -234,6 +382,7 @@
         <a class="proof-btn u-dashboard-008" id="sendProofBtn" href="https://wa.me/+2348146839663?text=Hello%20Optinex%2C%20I%20have%20made%20my%20activation%20payment.%20Here%20is%20my%20proof." target="_blank" rel="noopener noreferrer">
           Send your payment proof
         </a>
+        <button class="copy-btn" type="button" id="confirmActivationBtn">I have sent proof</button>
       </div>
     </div>
   </div>
@@ -265,6 +414,29 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="featureBackdrop" aria-hidden="true">
+    <div class="activate-modal feature-modal" role="dialog" aria-modal="true" aria-labelledby="featureModalTitle">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="featureModalTitle">Optinex Feature</div>
+          <div class="modal-sub" id="featureModalSub">Choose an Optinex stream and keep your earning flow organized.</div>
+        </div>
+        <button class="close-btn" type="button" id="closeFeatureModal" aria-label="Close feature details">
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+      <div class="feature-modal-body">
+        <div class="feature-modal-icon" id="featureModalIcon"><i class="fas fa-bolt"></i></div>
+        <div class="feature-modal-copy" id="featureModalCopy"></div>
+        <div class="feature-modal-status" id="featureModalStatus"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="activate-btn" type="button" id="featurePrimaryAction">Start Feature</button>
+        <button class="copy-btn" type="button" id="featureSecondaryAction">Mark Active</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="loginNotificationBackdrop" aria-hidden="true">
     <div class="activate-modal notification-modal" role="dialog" aria-modal="true" aria-labelledby="notifyTitle">
       <div class="modal-head">
@@ -285,7 +457,7 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const rawName = params.get('username') || params.get('name') || 'Glamour User';
+    const rawName = params.get('username') || params.get('name') || 'Optinex User';
     const selectedCountry = params.get('country') || params.get('region') || 'Nigeria';
     const cleanName = rawName.replace(/\+/g, ' ').trim();
     const displayName = cleanName.includes('@') ? cleanName.split('@')[0] : cleanName;
@@ -294,22 +466,49 @@
     const menuTrigger = document.getElementById('menuTrigger');
     const menuSheet = document.getElementById('menuSheet');
     const closeMenuSheet = document.getElementById('closeMenuSheet');
+    const homeTrigger = document.getElementById('homeTrigger');
+    const menuHome = document.getElementById('menuHome');
     const menuWithdraw = document.getElementById('menuWithdraw');
     const menuEarnings = document.getElementById('menuEarnings');
     const currencyChip = document.getElementById('currencyChip');
     const currencyLabel = document.getElementById('currencyLabel');
     const statusPill = document.querySelector('.status-pill');
     const totalAmount = document.getElementById('totalAmount');
+    const personalRevenueAmount = document.getElementById('personalRevenueAmount');
     const bonusLabels = document.querySelectorAll('.bonus-strip .bonus-label');
     const bonusValues = document.querySelectorAll('.bonus-strip .bonus-value');
     const completeTaskLink = document.getElementById('completeTaskLink');
     const taskLinkLabel = document.getElementById('taskLinkLabel');
     const withdrawTrigger = document.getElementById('withdrawTrigger');
+    const earningsTrigger = document.getElementById('earningsTrigger');
+    const openPaymentsAction = document.getElementById('openPaymentsAction');
+    const openStocksAction = document.getElementById('openStocksAction');
+    const revenueInfoTitle = document.getElementById('revenueInfoTitle');
+    const revenueInfoCopy = document.getElementById('revenueInfoCopy');
+    const revenueCardCode = document.getElementById('revenueCardCode');
+    const featureCards = document.querySelectorAll('[data-feature]');
+    const featureProgress = document.getElementById('featureProgress');
+    const activityList = document.getElementById('activityList');
+    const openReferralTool = document.getElementById('openReferralTool');
+    const openTaskTool = document.getElementById('openTaskTool');
+    const openPayoutTool = document.getElementById('openPayoutTool');
+    const panelActivateBtn = document.getElementById('panelActivateBtn');
+    const taskLiveLinks = document.querySelectorAll('.task-live');
+    const featureBackdrop = document.getElementById('featureBackdrop');
+    const closeFeatureModal = document.getElementById('closeFeatureModal');
+    const featureModalTitle = document.getElementById('featureModalTitle');
+    const featureModalSub = document.getElementById('featureModalSub');
+    const featureModalIcon = document.getElementById('featureModalIcon');
+    const featureModalCopy = document.getElementById('featureModalCopy');
+    const featureModalStatus = document.getElementById('featureModalStatus');
+    const featurePrimaryAction = document.getElementById('featurePrimaryAction');
+    const featureSecondaryAction = document.getElementById('featureSecondaryAction');
     const lockedLinks = document.querySelectorAll('.locked-link');
     const activateBackdrop = document.getElementById('activateBackdrop');
     const taskHistoryBackdrop = document.getElementById('taskHistoryBackdrop');
     const openActivateModal = document.getElementById('openActivateModal');
     const closeActivateModal = document.getElementById('closeActivateModal');
+    const confirmActivationBtn = document.getElementById('confirmActivationBtn');
     const closeTaskHistoryModal = document.getElementById('closeTaskHistoryModal');
     const copyAccountDetails = document.getElementById('copyAccountDetails');
     const copyBankName = document.getElementById('copyBankName');
@@ -329,28 +528,108 @@
     const referralUrl = new URL('register.html', window.location.href);
     let activationTimerInterval = null;
     let activationRemainingSeconds = 600;
-    const taskHistoryDateKey = 'glamourTaskHistoryDate:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+    const taskHistoryDateKey = 'OptinexTaskHistoryDate:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+    const ngnWelcomeBonus = 8000;
+    const ngnTaskReward = 4000;
     const eurWelcomeBonus = 7;
     const eurActivationFee = 8.78;
     const ngnActivationFee = 14000;
-    const taskRewardEur = (12000 / 1593) - eurWelcomeBonus;
+    const ngnEurRate = ngnWelcomeBonus / eurWelcomeBonus;
+    const taskRewardEur = ngnTaskReward / ngnEurRate;
     const regionalCurrencyMap = {
-      Nigeria: { code: 'NGN', symbol: '\u20A6', rate: 1593, decimals: 0 },
-      Ghana: { code: 'GHS', symbol: 'GH\u20B5', rate: 13.20, decimals: 2 },
+      Nigeria: { code: 'NGN', symbol: '\u20A6', rate: ngnEurRate, decimals: 0 },
+      Ghana: { code: 'GHS', symbol: 'GH\u20B5', rate: 13.20, decimals: 0 },
       Cameroon: { code: 'XAF', symbol: 'FCFA ', rate: 656.0, decimals: 0 },
-      Kenya: { code: 'KES', symbol: 'KSh ', rate: 151.5, decimals: 2 },
-      'South Africa': { code: 'ZAR', symbol: 'R', rate: 19.30, decimals: 2 },
-      India: { code: 'INR', symbol: '\u20B9', rate: 110.6, decimals: 2 },
-      Philippines: { code: 'PHP', symbol: '\u20B1', rate: 71.21, decimals: 2 },
-      International: { code: 'EUR', symbol: 'EUR ', rate: 1, decimals: 2 }
+      Kenya: { code: 'KES', symbol: 'KSh ', rate: 151.5, decimals: 0 },
+      'South Africa': { code: 'ZAR', symbol: 'R', rate: 19.30, decimals: 0 },
+      India: { code: 'INR', symbol: '\u20B9', rate: 110.6, decimals: 0 },
+      Philippines: { code: 'PHP', symbol: '\u20B1', rate: 71.21, decimals: 0 },
+      International: { code: 'EUR', symbol: 'EUR ', rate: 1, decimals: 0 }
     };
-    const eurCurrency = { code: 'EUR', symbol: 'EUR ', decimals: 2 };
-    const ngnCurrency = { code: 'NGN', symbol: '\u20A6', decimals: 0 };
+    const eurCurrency = { code: 'EUR', symbol: 'EUR ', decimals: 0 };
+    const ngnCurrency = { code: 'NGN', symbol: '\u20A6', decimals: 0};
     const activeCurrencyConfig = regionalCurrencyMap[selectedCountry] || eurCurrency;
     let currency = activeCurrencyConfig.code;
-    const taskStorageKey = 'glamourTaskCompleted:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+    const taskStorageKey = 'OptinexTaskCompleted:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+    const activeFeaturesKey = 'optinexActiveFeatures:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+    const activationStatusKey = 'optinexActivated:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+    const activationRequestKey = 'optinexActivationRequested:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
     let taskCompleted = window.localStorage.getItem(taskStorageKey) === 'true';
     let taskCompletedDate = window.localStorage.getItem(taskHistoryDateKey) || '';
+    let accountActivated = window.localStorage.getItem(activationStatusKey) === 'true';
+    let activationRequested = window.localStorage.getItem(activationRequestKey) === 'true';
+    let currentFeatureKey = '';
+    let activeFeatures = JSON.parse(window.localStorage.getItem(activeFeaturesKey) || '[]');
+    const apiProfile = {
+      username: displayName.toLowerCase(),
+      name: displayName,
+      country: selectedCountry
+    };
+    const featureData = {
+      idea: {
+        title: 'Idea Vault',
+        icon: 'fas fa-camera-retro',
+        sub: 'Submit ideas, concepts, and strategies.',
+        copy: 'Drop smart ideas when they hit. Approved concepts are reviewed as earning opportunities inside Optinex.',
+        action: 'Open Idea Vault'
+      },
+      bnpl: {
+        title: 'Buy Now Pay Later',
+        icon: 'fas fa-cart-shopping',
+        sub: 'Upgrade your life without waiting for full cash.',
+        copy: 'Track BNPL opportunities and activation readiness from your dashboard before applying.',
+        action: 'Check Eligibility'
+      },
+      review: {
+        title: 'Optinex Review X',
+        icon: 'fas fa-stopwatch',
+        sub: 'Test, review, and get paid for insight.',
+        copy: 'Complete review tasks for global products. Your activity history and reward status stay attached to your account.',
+        action: 'Start Review'
+      },
+      connect: {
+        title: 'Optinex Connect',
+        icon: 'fas fa-video',
+        sub: 'Build global relationships from your phone.',
+        copy: 'Use Connect to discover people, communities, and opportunity channels linked to Optinex growth.',
+        action: 'Open Connect'
+      },
+      bonus: {
+        title: 'Optinex Bonus Drop',
+        icon: 'fas fa-gift',
+        sub: 'Stay active and unlock random rewards.',
+        copy: 'Bonus Drop rewards consistent users. Complete tasks, keep your streak alive, and watch for unlocked drops.',
+        action: 'View Drops'
+      },
+      iq: {
+        title: 'IQ Test',
+        icon: 'fas fa-brain',
+        sub: 'Answer riddles and earn daily.',
+        copy: 'Take short IQ challenges and keep your streak active. Correct answers can unlock daily earning chances.',
+        action: 'Take IQ Test'
+      },
+      stocks: {
+        title: 'Optinex Stocks',
+        icon: 'fas fa-chart-line',
+        sub: 'Track growth and capital opportunities.',
+        copy: 'Stocks is your watch area for growth tools, capital education, and future investment-linked opportunities.',
+        action: 'View Stocks'
+      },
+      referral: {
+        title: 'Referral Hub',
+        icon: 'fas fa-link',
+        sub: 'Invite earners with your personal link.',
+        copy: 'Copy your referral link and share it. New users who register through it are attached to your username.',
+        action: 'Copy Referral Link'
+      },
+      payout: {
+        title: 'Payout Desk',
+        icon: 'fas fa-wallet',
+        sub: 'Manage activation and withdrawal readiness.',
+        copy: 'View activation details, payment proof flow, and withdrawal access from the payout desk.',
+        action: 'Open Payout'
+      }
+    };
 
     referralUrl.searchParams.set('refUsername', normalizedReferralName);
     referralLinkText.textContent = referralUrl.href;
@@ -362,6 +641,115 @@
         maximumFractionDigits: config.decimals
       }).format(value);
       return config.symbol + formatted;
+    }
+
+    function getDisplayConfig(displayCurrency) {
+      return displayCurrency === 'EUR' ? eurCurrency : activeCurrencyConfig;
+    }
+
+    function getLocalValue(eurValue, displayCurrency) {
+      return displayCurrency === 'EUR' ? eurValue : eurValue * activeCurrencyConfig.rate;
+    }
+
+    function saveActiveFeatures() {
+      window.localStorage.setItem(activeFeaturesKey, JSON.stringify(activeFeatures));
+    }
+
+    async function syncDashboardState() {
+      if (!window.location.protocol.startsWith('http')) return;
+      try {
+        await fetch('/api/dashboard/state', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...apiProfile,
+            activated: accountActivated,
+            activationRequested,
+            activeFeatures,
+            taskCompleted,
+            taskCompletedDate,
+            currency,
+            updatedAt: new Date().toISOString()
+          })
+        });
+      } catch (error) {
+        // Static hosting or offline mode keeps using localStorage.
+      }
+    }
+
+    async function loadDashboardState() {
+      if (!window.location.protocol.startsWith('http')) return;
+      try {
+        const response = await fetch('/api/dashboard/state?username=' + encodeURIComponent(apiProfile.username) + '&country=' + encodeURIComponent(selectedCountry));
+        if (!response.ok) return;
+        const state = await response.json();
+        if (!state || !state.found) return;
+        accountActivated = Boolean(state.activated);
+        activationRequested = Boolean(state.activationRequested);
+        taskCompleted = Boolean(state.taskCompleted);
+        taskCompletedDate = state.taskCompletedDate || taskCompletedDate;
+        activeFeatures = Array.isArray(state.activeFeatures) ? state.activeFeatures : activeFeatures;
+        window.localStorage.setItem(activationStatusKey, String(accountActivated));
+        window.localStorage.setItem(activationRequestKey, String(activationRequested));
+        window.localStorage.setItem(taskStorageKey, String(taskCompleted));
+        if (taskCompletedDate) window.localStorage.setItem(taskHistoryDateKey, taskCompletedDate);
+        saveActiveFeatures();
+        renderActivationState();
+        renderTaskState();
+        renderRegionalBalances(currency);
+      } catch (error) {
+        // Keep local state if API is unavailable.
+      }
+    }
+
+    function renderFeatureProgress() {
+      const streamKeys = Array.from(featureCards).map(function (card) { return card.dataset.feature; });
+      const activeStreamCount = activeFeatures.filter(function (key) { return streamKeys.includes(key); }).length;
+      featureCards.forEach(function (card) {
+        const isActive = activeFeatures.includes(card.dataset.feature);
+        card.classList.toggle('active', isActive);
+        card.classList.toggle('locked', !accountActivated);
+      });
+      featureProgress.textContent = accountActivated
+        ? activeStreamCount + '/' + featureCards.length + ' active'
+        : 'Activate account';
+    }
+
+    function renderActivity() {
+      const items = [
+        {
+          icon: 'fas fa-user-check',
+          title: accountActivated ? 'Account activated' : (activationRequested ? 'Activation pending' : 'Activation required'),
+          meta: accountActivated ? 'All Optinex streams are unlocked' : (activationRequested ? 'Proof sent, waiting for confirmation' : 'Activate to unlock earning streams')
+        },
+        {
+          icon: taskCompleted ? 'fas fa-circle-check' : 'far fa-newspaper',
+          title: taskCompleted ? 'Article task completed' : 'Article task available',
+          meta: taskCompleted ? (taskCompletedDate || 'Completed') : 'Pending reward'
+        },
+        {
+          icon: 'fas fa-layer-group',
+          title: activeFeatures.length + ' Optinex streams active',
+          meta: activeFeatures.length ? activeFeatures.map(function (key) { return featureData[key]?.title || key; }).join(', ') : 'Tap a feature to activate'
+        }
+      ];
+
+      activityList.innerHTML = items.map(function (item) {
+        return '<div class="activity-row"><i class="' + item.icon + '"></i><span><strong>' + item.title + '</strong><small>' + item.meta + '</small></span></div>';
+      }).join('');
+    }
+
+    function renderRevenueInfo(displayCurrency) {
+      const config = getDisplayConfig(displayCurrency);
+      const taskValue = getLocalValue(taskRewardEur, displayCurrency);
+      const referralValue = taskCompleted ? taskValue * 0.2 : 0;
+      let amountValue = taskCompleted ? referralValue : 0;
+
+      revenueInfoTitle.textContent = 'Your Personal Revenue info';
+      revenueCardCode.textContent = '**** 2026';
+      revenueInfoCopy.textContent = 'When you refer users, you earn a share of their earnings.';
+
+      personalRevenueAmount.textContent = formatMoney(amountValue, config);
     }
 
     function renderRegionalBalances(displayCurrency) {
@@ -383,6 +771,7 @@
         activationPriceValues[1].textContent = formatMoney(eurActivationFee, eurCurrency);
         totalAmount.textContent = formatMoney(totalEur, eurCurrency);
         taskHistoryAmount.textContent = formatMoney(taskRewardEur, eurCurrency);
+        renderRevenueInfo(displayCurrency);
         return;
       }
 
@@ -396,18 +785,26 @@
       totalAmount.textContent = displayCurrency === 'EUR'
         ? formatMoney(totalEur, eurCurrency)
         : formatMoney(localTotal, activeCurrencyConfig);
+      renderRevenueInfo(displayCurrency);
     }
 
     function renderTaskState() {
       if (taskCompleted) {
         completeTaskLink.classList.add('locked-link');
-        taskLinkLabel.textContent = 'Task Completed';
+        if (personalRevenueAmount) {
+          personalRevenueAmount.closest('.personal-revenue-card').classList.add('earned');
+        }
+        taskLinkLabel.textContent = 'Completed';
         taskHistoryDate.textContent = taskCompletedDate || 'Completed';
       } else {
         completeTaskLink.classList.remove('locked-link');
-        taskLinkLabel.textContent = 'Task';
+        if (personalRevenueAmount) {
+          personalRevenueAmount.closest('.personal-revenue-card').classList.remove('earned');
+        }
+        taskLinkLabel.textContent = 'Articles';
         taskHistoryDate.textContent = 'Pending';
       }
+      renderActivity();
     }
 
     function openTaskHistoryModal() {
@@ -418,6 +815,48 @@
     function closeTaskHistory() {
       taskHistoryBackdrop.classList.remove('open');
       taskHistoryBackdrop.setAttribute('aria-hidden', 'true');
+    }
+
+    function openFeatureModal(featureKey) {
+      if (!accountActivated && !['referral', 'payout'].includes(featureKey)) {
+        openActivationModal();
+        return;
+      }
+      currentFeatureKey = featureKey;
+      const feature = featureData[featureKey] || featureData.idea;
+      const isActive = activeFeatures.includes(featureKey);
+      featureModalTitle.textContent = feature.title;
+      featureModalSub.textContent = feature.sub;
+      featureModalIcon.innerHTML = '<i class="' + feature.icon + '"></i>';
+      featureModalCopy.textContent = feature.copy;
+      featureModalStatus.textContent = isActive ? 'Active on your dashboard' : 'Not active yet';
+      featurePrimaryAction.textContent = feature.action;
+      featureSecondaryAction.textContent = isActive ? 'Active' : 'Mark Active';
+      featureSecondaryAction.disabled = isActive;
+      featureBackdrop.classList.add('open');
+      featureBackdrop.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeFeatureDetails() {
+      featureBackdrop.classList.remove('open');
+      featureBackdrop.setAttribute('aria-hidden', 'true');
+      currentFeatureKey = '';
+    }
+
+    function activateFeature(featureKey) {
+      if (!accountActivated && !['referral', 'payout'].includes(featureKey)) {
+        openActivationModal();
+        return;
+      }
+      if (!activeFeatures.includes(featureKey)) {
+        activeFeatures.push(featureKey);
+        saveActiveFeatures();
+      }
+      renderFeatureProgress();
+      renderRegionalBalances(currency);
+      renderActivity();
+      syncDashboardState();
+      openFeatureModal(featureKey);
     }
 
     function renderActivationTimer() {
@@ -449,28 +888,27 @@
       startActivationTimer();
     }
 
-    currencyChip.addEventListener('click', function () {
-      currency = currency === 'NGN' ? 'EUR' : 'NGN';
-      currencyLabel.textContent = currency;
-      totalAmount.textContent = currency === 'NGN' ? '₦12,000' : '€7';
-    });
+    function renderActivationState() {
+      document.body.classList.toggle('account-active', accountActivated);
+      document.body.classList.toggle('account-locked', !accountActivated);
+      confirmActivationBtn.textContent = accountActivated ? 'Account Activated' : (activationRequested ? 'Activation Pending' : 'I have sent proof');
+      confirmActivationBtn.disabled = accountActivated || activationRequested;
+      renderFeatureProgress();
+      renderActivity();
+    }
 
-    renderRegionalBalances(currency);
-    renderTaskState();
+    function goHome(event) {
+      if (event) event.preventDefault();
+      closeMenu();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-    const freshCurrencyChip = currencyChip.cloneNode(true);
-    currencyChip.parentNode.replaceChild(freshCurrencyChip, currencyChip);
-    freshCurrencyChip.addEventListener('click', function () {
-      if (activeCurrencyConfig.code === 'EUR') {
-        currency = 'EUR';
-      } else {
-        currency = currency === activeCurrencyConfig.code ? 'EUR' : activeCurrencyConfig.code;
+    function handleTaskClick(event) {
+      if (event) event.preventDefault();
+      if (!accountActivated) {
+        openActivationModal();
+        return;
       }
-      renderRegionalBalances(currency);
-    });
-
-    completeTaskLink.addEventListener('click', function (event) {
-      event.preventDefault();
       if (taskCompleted) {
         openTaskHistoryModal();
         return;
@@ -486,7 +924,121 @@
       window.localStorage.setItem(taskHistoryDateKey, taskCompletedDate);
       renderTaskState();
       renderRegionalBalances(currency);
+      syncDashboardState();
       openTaskHistoryModal();
+    }
+
+    function unlockAccountLocally() {
+      activationRequested = true;
+      window.localStorage.setItem(activationRequestKey, 'true');
+      renderActivationState();
+      renderRegionalBalances(currency);
+      syncDashboardState();
+      closeModal();
+    }
+
+    renderRegionalBalances(currency);
+    renderTaskState();
+    renderFeatureProgress();
+    renderActivity();
+    renderActivationState();
+
+    featureCards.forEach(function (card) {
+      card.addEventListener('click', function () {
+        openFeatureModal(card.dataset.feature);
+      });
+    });
+
+    const freshCurrencyChip = currencyChip.cloneNode(true);
+    currencyChip.parentNode.replaceChild(freshCurrencyChip, currencyChip);
+    freshCurrencyChip.addEventListener('click', function () {
+      if (activeCurrencyConfig.code === 'EUR') {
+        currency = 'EUR';
+      } else {
+        currency = currency === activeCurrencyConfig.code ? 'EUR' : activeCurrencyConfig.code;
+      }
+      renderRegionalBalances(currency);
+    });
+
+    taskLiveLinks.forEach(function (link) {
+      link.addEventListener('click', handleTaskClick);
+    });
+
+    openPaymentsAction.addEventListener('click', function (event) {
+      event.preventDefault();
+      openActivationModal();
+    });
+
+    openStocksAction.addEventListener('click', function (event) {
+      event.preventDefault();
+      if (!accountActivated) {
+        openActivationModal();
+        return;
+      }
+      openFeatureModal('stocks');
+    });
+
+    earningsTrigger.addEventListener('click', function (event) {
+      event.preventDefault();
+      openTaskHistoryModal();
+    });
+
+    openReferralTool.addEventListener('click', function () {
+      openFeatureModal('referral');
+    });
+
+    openTaskTool.addEventListener('click', function () {
+      if (!accountActivated) {
+        openActivationModal();
+        return;
+      }
+      handleTaskClick();
+    });
+
+    openPayoutTool.addEventListener('click', openActivationModal);
+    if (panelActivateBtn) panelActivateBtn.addEventListener('click', openActivationModal);
+
+    closeFeatureModal.addEventListener('click', closeFeatureDetails);
+    featureBackdrop.addEventListener('click', function (event) {
+      if (event.target === featureBackdrop) closeFeatureDetails();
+    });
+
+    featurePrimaryAction.addEventListener('click', async function () {
+      if (currentFeatureKey === 'referral') {
+        try {
+          await navigator.clipboard.writeText(referralUrl.href);
+          featurePrimaryAction.textContent = 'Referral Link Copied';
+        } catch (error) {
+          featurePrimaryAction.textContent = 'Copy Failed';
+        }
+        window.setTimeout(function () {
+          featurePrimaryAction.textContent = featureData.referral.action;
+        }, 1500);
+        return;
+      }
+
+      if (currentFeatureKey === 'payout') {
+        closeFeatureDetails();
+        openActivationModal();
+        return;
+      }
+
+      if (currentFeatureKey === 'review' || currentFeatureKey === 'iq') {
+        if (!accountActivated) {
+          closeFeatureDetails();
+          openActivationModal();
+          return;
+        }
+        closeFeatureDetails();
+        handleTaskClick();
+        return;
+      }
+
+      activateFeature(currentFeatureKey);
+    });
+
+    featureSecondaryAction.addEventListener('click', function () {
+      activateFeature(currentFeatureKey);
     });
 
     function openMenu() {
@@ -504,6 +1056,8 @@
     menuSheet.addEventListener('click', function (event) {
       if (event.target === menuSheet) closeMenu();
     });
+    if (homeTrigger) homeTrigger.addEventListener('click', goHome);
+    if (menuHome) menuHome.addEventListener('click', goHome);
 
     openActivateModal.addEventListener('click', openActivationModal);
 
@@ -522,7 +1076,7 @@
     menuEarnings.addEventListener('click', function (event) {
       event.preventDefault();
       closeMenu();
-      openActivationModal();
+      openTaskHistoryModal();
     });
 
     lockedLinks.forEach(function (link) {
@@ -540,6 +1094,7 @@
     }
 
     closeActivateModal.addEventListener('click', closeModal);
+    confirmActivationBtn.addEventListener('click', unlockAccountLocally);
     activateBackdrop.addEventListener('click', function (event) {
       if (event.target === activateBackdrop) closeModal();
     });
@@ -548,19 +1103,21 @@
       if (event.target === taskHistoryBackdrop) closeTaskHistory();
     });
 
-    copyAccountDetails.addEventListener('click', async function () {
-      const details = 'Bank: ' + bankName + '\nAccount Name: ' + accountName + '\nAccount Number: ' + accountNumber + '\nActivation Fee: ' + activationPriceValues[0].textContent;
-      try {
-        await navigator.clipboard.writeText(details);
-        copyAccountDetails.textContent = 'Full Details Copied';
-      } catch (error) {
-        copyAccountDetails.textContent = 'Copy Failed';
-      }
+    if (copyAccountDetails) {
+      copyAccountDetails.addEventListener('click', async function () {
+        const details = 'Bank: ' + bankName + '\nAccount Name: ' + accountName + '\nAccount Number: ' + accountNumber + '\nActivation Fee: ' + activationPriceValues[0].textContent;
+        try {
+          await navigator.clipboard.writeText(details);
+          copyAccountDetails.textContent = 'Full Details Copied';
+        } catch (error) {
+          copyAccountDetails.textContent = 'Copy Failed';
+        }
 
-      window.setTimeout(function () {
-        copyAccountDetails.textContent = 'Copy Full Account Details';
-      }, 1800);
-    });
+        window.setTimeout(function () {
+          copyAccountDetails.textContent = 'Copy Full Account Details';
+        }, 1800);
+      });
+    }
 
     copyBankName.addEventListener('click', async function () {
       try {
@@ -617,7 +1174,6 @@
     const loginNotificationBackdrop = document.getElementById('loginNotificationBackdrop');
     const closeLoginNotification = document.getElementById('closeLoginNotification');
     const goToTaskButton = document.getElementById('goToTaskButton');
-    const sponsoredTaskLink = document.getElementById('sponsoredTaskLink');
     const dismissLoginNotification = document.getElementById('dismissLoginNotification');
 
     const loginNotifKey = 'glamourLoginNotifDismissed:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
@@ -645,15 +1201,11 @@
     goToTaskButton.addEventListener('click', function () {
       // mark dismissed and navigate
       closeLoginNotificationModal(true);
-      if (sponsoredTaskLink) {
-        sponsoredTaskLink.click();
-      } else {
-        completeTaskLink.click();
-      }
+      handleTaskClick();
     });
 
-    window.addEventListener('load', function () {
-      openLoginNotification();
+    window.addEventListener('load', async function () {
+      await loadDashboardState();
     });
   </script>
 </body>
