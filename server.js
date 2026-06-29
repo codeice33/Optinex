@@ -59,7 +59,23 @@ function hashPassword(password) {
 }
 
 app.get('/api/health', async (req, res) => {
-  const collection = await getCollection().catch(() => null);
+  try {
+    const collection = await getCollection();
+
+    res.json({
+      ok: true,
+      database: collection ? "connected" : "not_configured",
+      hasMongoUri: !!process.env.MONGODB_URI,
+      dbName: process.env.MONGODB_DB || "optinex"
+    });
+  } catch (err) {
+    res.status(500).json({
+      ok: false,
+      error: err.message,
+      hasMongoUri: !!process.env.MONGODB_URI
+    });
+  }
+});
   res.json({
     ok: true,
     database: collection ? 'connected' : 'not_configured'
