@@ -1,3 +1,4 @@
+const cors = require('cors');
 require('dotenv').config();
 
 const path = require('path');
@@ -13,6 +14,13 @@ const dbName = process.env.MONGODB_DB || 'optinex';
 let client;
 let dashboardStates;
 let users;
+
+// Enable CORS
+app.use(cors({
+  origin: 'https://optinex.xtys.dev',
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static(__dirname));

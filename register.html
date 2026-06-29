@@ -131,7 +131,7 @@
       }
     }
 
-    // Password Strength Logic (Glamour Themed Colors)
+    // Password Strength Logic (optinex Themed Colors)
     const passwordInput = document.getElementById('regPassword');
     const strengthBar = document.getElementById('strengthBar');
     const strengthText = document.getElementById('strengthText');
@@ -149,21 +149,21 @@
       // Update Bar
       strengthBar.style.width = result + '%';
       
-      // Update Color & Text based on Glamour palette
+      // Update Color & Text based on optinex palette
       if (result <= 20) {
-        strengthBar.style.backgroundColor = '#ff4d4d'; // Glamour Red
+        strengthBar.style.backgroundColor = '#ff4d4d'; // optinex Red
         strengthText.innerText = 'Weak';
         strengthText.style.color = '#ff4d4d';
       } else if (result <= 50) {
-        strengthBar.style.backgroundColor = '#e8bf5a'; // Glamour Gold
+        strengthBar.style.backgroundColor = '#e8bf5a'; // optinexGold
         strengthText.innerText = 'Fair';
         strengthText.style.color = '#e8bf5a';
       } else if (result <= 80) {
-        strengthBar.style.backgroundColor = '#1499e6'; // Glamour Cyan
+        strengthBar.style.backgroundColor = '#1499e6'; // optinex Cyan
         strengthText.innerText = 'Good';
         strengthText.style.color = '#1499e6';
       } else {
-        strengthBar.style.backgroundColor = '#1499e6'; // Glamour Primary
+        strengthBar.style.backgroundColor = '#1499e6'; // optinex Primary
         strengthText.innerText = 'Strong';
         strengthText.style.color = '#1499e6';
       }
@@ -174,7 +174,7 @@
       if (!this.reportValidity()) return;
 
       const submitButton = this.querySelector('button[type="submit"]');
-      const username = this.querySelector('input[name="username"]').value.trim() || 'GlamourUser';
+      const username = this.querySelector('input[name="username"]').value.trim() || 'OptinexUser';
       const country = this.querySelector('select[name="country"]').value || 'Nigeria';
       const formData = new FormData(this);
       const payload = Object.fromEntries(formData.entries());
@@ -185,7 +185,7 @@
       }
 
       try {
-        const response = await fetch('/api/register', {
+        const response = await fetch('https://optinex.onrender.com/api/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
