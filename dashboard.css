@@ -1199,14 +1199,14 @@ body {
 }
 
 .balance-amount {
-  width: 100%;
+  width: 70%;
   max-width: 10ch;
-  font-size: clamp(3.15rem, 13vw, 4.7rem);
-  font-weight: 900;
+  font-size: clamp(3.00rem, 8vw, 4.5rem);
+  font-weight: 820;
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1, "lnum" 1;
-  color: #061221;
+  color: #011a28;
   text-wrap: nowrap;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
 }
