@@ -34,10 +34,10 @@
       </header>
 
       <div class="revenue-head">
-        <div>
+        <div class="balance-summary">
           <button class="withdraw-chip" type="button" id="openActivateModal">Withdraw Signup Fee</button>
-          <div class="metric-label">Total Revenue <i class="fas fa-chevron-down" aria-hidden="true"></i></div>
-          <div class="amount" id="totalAmount">₦8,000</div>
+          <div class="metric-label">Total Revenue</div>
+          <div class="amount balance-amount" id="totalAmount">₦8,000</div>
         </div>
         <div class="streak-card">
           <div>Article Streak</div>
@@ -68,7 +68,6 @@
             <div class="card-chip" aria-hidden="true"><span></span><span></span></div>
           </div>
           <div class="personal-amount" id="personalRevenueAmount">₦0</div>
-          
           <div class="revenue-card-bottom">
             <span>OXN REVENUE</span>
             <strong id="revenueCardCode">**** 2026</strong>
@@ -84,9 +83,9 @@
             <i class="far fa-newspaper"></i>
             <span id="taskLinkLabel">Articles</span>
           </a>
-          <a href="#" class="action-tile" id="openStocksAction">
+          <a href="#" class="action-tile" id="opentaskAction">
             <i class="fas fa-sliders"></i>
-            <span>Stocks</span>
+            <span>task</span>
           </a>
         </div>
       </div>
@@ -262,8 +261,7 @@
             <div class="voice-player-label">New Member Welcome Note</div>
             <div class="voice-player-time">Play Audio</div>
           </div>
-          <audio class="voice-audio" controls preload="metadata">
-            <source src="WhatsApp Audio 2026-05-06 at 12.03.14 PM.mpeg" type="audio/mpeg">
+          <audio class="voice-audio" controls preload="none">
             Your browser does not support audio playback.
           </audio>
         </div>
@@ -338,7 +336,7 @@
         </div>
         <div class="u-dashboard-006">
           <div class="detail-label">Equivalent</div>
-          <strong class="u-dashboard-007">€8.20</strong>
+          <strong class="u-dashboard-007">£8.20</strong>
         </div>
       </div>
 
@@ -482,7 +480,7 @@
     const withdrawTrigger = document.getElementById('withdrawTrigger');
     const earningsTrigger = document.getElementById('earningsTrigger');
     const openPaymentsAction = document.getElementById('openPaymentsAction');
-    const openStocksAction = document.getElementById('openStocksAction');
+    const opentaskAction = document.getElementById('opentaskAction');
     const revenueInfoTitle = document.getElementById('revenueInfoTitle');
     const revenueInfoCopy = document.getElementById('revenueInfoCopy');
     const revenueCardCode = document.getElementById('revenueCardCode');
@@ -521,6 +519,7 @@
     const activationPriceValues = document.querySelectorAll('.activation-price strong');
     const taskHistoryAmount = document.getElementById('taskHistoryAmount');
     const taskHistoryDate = document.getElementById('taskHistoryDate');
+    const articleStreakDays = document.getElementById('articleStreakDays');
     const accountName = document.getElementById('accountName').textContent.trim();
     const accountNumber = document.getElementById('accountNumber').textContent.trim();
     const bankName = document.getElementById('bankName').textContent.trim();
@@ -551,6 +550,8 @@
     const activeCurrencyConfig = regionalCurrencyMap[selectedCountry] || eurCurrency;
     let currency = activeCurrencyConfig.code;
     const taskStorageKey = 'OptinexTaskCompleted:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+    const streakDaysKey = 'OptinexArticleStreakDays:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
+    const streakLastLoginKey = 'OptinexArticleStreakLastLogin:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
     const activeFeaturesKey = 'optinexActiveFeatures:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
     const activationStatusKey = 'optinexActivated:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
     const activationRequestKey = 'optinexActivationRequested:' + displayName.toLowerCase() + ':' + selectedCountry.toLowerCase();
@@ -558,6 +559,8 @@
     let taskCompletedDate = window.localStorage.getItem(taskHistoryDateKey) || '';
     let accountActivated = window.localStorage.getItem(activationStatusKey) === 'true';
     let activationRequested = window.localStorage.getItem(activationRequestKey) === 'true';
+    let streakDays = Number(window.localStorage.getItem(streakDaysKey) || '0');
+    let streakLastLogin = Number(window.localStorage.getItem(streakLastLoginKey) || '0');
     let currentFeatureKey = '';
     let activeFeatures = JSON.parse(window.localStorage.getItem(activeFeaturesKey) || '[]');
     const apiProfile = {
@@ -608,12 +611,12 @@
         copy: 'Take short IQ challenges and keep your streak active. Correct answers can unlock daily earning chances.',
         action: 'Take IQ Test'
       },
-      stocks: {
-        title: 'Optinex Stocks',
+      task: {
+        title: 'Optinex task',
         icon: 'fas fa-chart-line',
         sub: 'Track growth and capital opportunities.',
-        copy: 'Stocks is your watch area for growth tools, capital education, and future investment-linked opportunities.',
-        action: 'View Stocks'
+        copy: 'task is your watch area for growth tools, capital education, and future investment-linked opportunities.',
+        action: 'View task'
       },
       referral: {
         title: 'Referral Hub',
@@ -668,6 +671,8 @@
             activeFeatures,
             taskCompleted,
             taskCompletedDate,
+            streakDays,
+            streakLastLogin,
             currency,
             updatedAt: new Date().toISOString()
           })
@@ -688,18 +693,42 @@
         activationRequested = Boolean(state.activationRequested);
         taskCompleted = Boolean(state.taskCompleted);
         taskCompletedDate = state.taskCompletedDate || taskCompletedDate;
+        streakDays = Math.max(Number(state.streakDays || 0), streakDays);
+        streakLastLogin = Math.max(Number(state.streakLastLogin || 0), streakLastLogin);
         activeFeatures = Array.isArray(state.activeFeatures) ? state.activeFeatures : activeFeatures;
         window.localStorage.setItem(activationStatusKey, String(accountActivated));
         window.localStorage.setItem(activationRequestKey, String(activationRequested));
         window.localStorage.setItem(taskStorageKey, String(taskCompleted));
         if (taskCompletedDate) window.localStorage.setItem(taskHistoryDateKey, taskCompletedDate);
+        window.localStorage.setItem(streakDaysKey, String(streakDays));
+        window.localStorage.setItem(streakLastLoginKey, String(streakLastLogin));
         saveActiveFeatures();
         renderActivationState();
         renderTaskState();
         renderRegionalBalances(currency);
+        renderStreak();
       } catch (error) {
         // Keep local state if API is unavailable.
       }
+    }
+
+    function renderStreak() {
+      if (articleStreakDays) articleStreakDays.textContent = String(streakDays);
+    }
+
+    function updateLoginStreak() {
+      const now = Date.now();
+      const oneDayMs = 24 * 60 * 60 * 1000;
+      if (!streakLastLogin || now - streakLastLogin >= oneDayMs) {
+        streakDays += 1;
+        streakLastLogin = now;
+        window.localStorage.setItem(streakDaysKey, String(streakDays));
+        window.localStorage.setItem(streakLastLoginKey, String(streakLastLogin));
+        renderStreak();
+        syncDashboardState();
+        return;
+      }
+      renderStreak();
     }
 
     function renderFeatureProgress() {
@@ -745,11 +774,9 @@
       const referralValue = taskCompleted ? taskValue * 0.2 : 0;
       let amountValue = taskCompleted ? referralValue : 0;
 
-      revenueInfoTitle.textContent = 'Your Personal Revenue info';
-      revenueCardCode.textContent = '**** 2026';
-      revenueInfoCopy.textContent = 'When you refer users, you earn a share of their earnings.';
-
-      personalRevenueAmount.textContent = formatMoney(amountValue, config);
+      if (revenueInfoTitle) revenueInfoTitle.textContent = 'Your Personal Revenue info';
+      if (revenueCardCode) revenueCardCode.textContent = '**** 2026';
+      if (personalRevenueAmount) personalRevenueAmount.textContent = formatMoney(amountValue, config);
     }
 
     function renderRegionalBalances(displayCurrency) {
@@ -942,6 +969,7 @@
     renderFeatureProgress();
     renderActivity();
     renderActivationState();
+    renderStreak();
 
     featureCards.forEach(function (card) {
       card.addEventListener('click', function () {
@@ -969,13 +997,13 @@
       openActivationModal();
     });
 
-    openStocksAction.addEventListener('click', function (event) {
+    if (opentaskAction) opentaskAction.addEventListener('click', function (event) {
       event.preventDefault();
       if (!accountActivated) {
         openActivationModal();
         return;
       }
-      openFeatureModal('stocks');
+      openFeatureModal('task');
     });
 
     earningsTrigger.addEventListener('click', function (event) {
@@ -1206,6 +1234,7 @@
 
     window.addEventListener('load', async function () {
       await loadDashboardState();
+      updateLoginStreak();
     });
   </script>
 </body>

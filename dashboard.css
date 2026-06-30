@@ -1160,6 +1160,12 @@ body {
   margin-top: 22px;
 }
 
+.balance-summary {
+  min-width: 0;
+  display: grid;
+  justify-items: start;
+}
+
 .withdraw-chip {
   border: 0;
   border-radius: 990px;
@@ -1190,6 +1196,19 @@ body {
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0;
+}
+
+.balance-amount {
+  width: 100%;
+  max-width: 10ch;
+  font-size: clamp(3.15rem, 13vw, 4.7rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  color: #061221;
+  text-wrap: nowrap;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .streak-card {
@@ -1680,6 +1699,10 @@ body {
     font-size: clamp(2.08rem, 13vw, 2.72rem);
   }
 
+  .balance-amount {
+    font-size: clamp(2.55rem, 13vw, 3.25rem);
+  }
+
   .metric-label {
     font-size: 1.06rem;
   }
@@ -1802,6 +1825,11 @@ body {
   .app-header,
   .revenue-head {
     grid-column: 1 / -1;
+  }
+
+  .balance-amount {
+    max-width: none;
+    font-size: clamp(4rem, 6vw, 6rem);
   }
 
   .dashboard-grid {

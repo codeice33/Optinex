@@ -159,6 +159,8 @@ app.post('/api/dashboard/state', async (req, res) => {
     activeFeatures: Array.isArray(req.body.activeFeatures) ? req.body.activeFeatures : [],
     taskCompleted: Boolean(req.body.taskCompleted),
     taskCompletedDate: String(req.body.taskCompletedDate || ''),
+    streakDays: Math.max(0, Number.parseInt(req.body.streakDays, 10) || 0),
+    streakLastLogin: Math.max(0, Number.parseInt(req.body.streakLastLogin, 10) || 0),
     currency: String(req.body.currency || 'NGN'),
     updatedAt: new Date()
   };
