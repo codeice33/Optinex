@@ -32,6 +32,9 @@
           <li>Secure payment tracking</li>
           <li>Weekly referral boosts</li>
         </ul>
+        <div class="package-action-row">
+          <span class="package-action-btn">Make payment</span>
+        </div>
       </button>
       <button type="button" class="hero-card package-card" data-name="Dynasty Package" data-price="15000" data-description="Fast-track activation and premium earning tools." data-plan="dynasty">
         <div class="hero-card-badge"><i class="fas fa-crown"></i></div>
@@ -46,19 +49,15 @@
           <li>Exclusive bonus access</li>
           <li>Higher referral rewards</li>
         </ul>
+        <div class="package-action-row">
+          <span class="package-action-btn">Make payment</span>
+        </div>
       </button>
     </div>
 
-    <div class="panel">
-      <div class="steps">
-        <section class="step active" id="stepPackage">
-          <div class="package-panel">
-            <p class="package-note">Select a package and continue.</p>
-            <div class="flow-footer">
-              <button id="toPaymentBtn" class="btn" type="button" disabled>Continue to payment</button>
-            </div>
-          </div>
-        </section>
+    <div class="steps">
+      <section class="step active" id="stepPackage">
+      </section>
 
         <section class="step" id="stepPayment">
           <div class="payment-card">
@@ -116,6 +115,7 @@
                   <label for="proofPackageSelect" class="proof-select-label">Selected package</label>
                   <select id="proofPackageSelect" class="proof-select">
                     <option value="noble">Noble Package — ₦10,000</option>
+                    <option value="dynasty">Dynasty Package — ₦15,000</option>
                   </select>
                 </div>
                 <input type="text" id="amountPaid" class="form-control" placeholder="Amount paid" readonly>
@@ -164,7 +164,6 @@
     const copyBankBtn = document.getElementById('copyBankBtn');
     const copyAccountBtn = document.getElementById('copyAccountBtn');
     const packageCards = document.querySelectorAll('.package-card');
-    const toPaymentBtn = document.getElementById('toPaymentBtn');
     const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
     const uploadProofBtn = document.getElementById('uploadProofBtn');
     const backToPackageBtn = document.getElementById('backToPackageBtn');
@@ -177,6 +176,69 @@
     let selectedPackage = { name: 'Noble Package', price: 10000, plan: 'noble' };
     let selectedPayment = { bank: 'Opay', accountName: 'Nwangwu Chibuikem Valentine', accountNumber: '9122513437' };
 
+    const currencyMap = {
+      ng: { symbol: '₦', rate: 1 },
+      nigeria: { symbol: '₦', rate: 1 },
+      us: { symbol: '$', rate: 0.0063 },
+      usa: { symbol: '$', rate: 0.0063 },
+      unitedstates: { symbol: '$', rate: 0.0063 },
+      gb: { symbol: '£', rate: 0.0049 },
+      uk: { symbol: '£', rate: 0.0049 },
+      unitedkingdom: { symbol: '£', rate: 0.0049 },
+      gh: { symbol: '₵', rate: 0.0084 },
+      ghana: { symbol: '₵', rate: 0.0084 },
+      ke: { symbol: 'KSh', rate: 0.078 },
+      kenya: { symbol: 'KSh', rate: 0.078 },
+      ca: { symbol: 'C$', rate: 0.0084 },
+      canada: { symbol: 'C$', rate: 0.0084 },
+      default: { symbol: '₦', rate: 1 }
+    };
+
+    function getCurrencyMeta(countryValue) {
+      const key = String(countryValue || '').trim().toLowerCase().replace(/\s+/g, '');
+      return currencyMap[key] || currencyMap.default;
+    }
+
+    function formatPackagePrice(amount, countryValue) {
+      const meta = getCurrencyMeta(countryValue);
+      const converted = amount * meta.rate;
+      if (meta.symbol === '₦' || meta.symbol === 'KSh') {
+        return `${meta.symbol}${Math.round(converted).toLocaleString()}`;
+      }
+      return `${meta.symbol}${converted.toFixed(0).toLocaleString()}`;
+    }
+
+    function updatePackageCardPrices(countryValue) {
+      packageCards.forEach(card => {
+        const priceBox = card.querySelector('.hero-card-price');
+        const priceNote = priceBox?.querySelector('span')?.textContent || '';
+        const priceText = formatPackagePrice(Number(card.dataset.price || 0), countryValue);
+        if (priceBox) {
+          priceBox.innerHTML = `${priceText}<span>${priceNote}</span>`;
+        }
+      });
+    }
+
+    function getSelectedCountry() {
+      return authUser?.country || params.get('country') || 'Nigeria';
+    }
+
+    function updateSelection() {
+      const countryValue = getSelectedCountry();
+      const priceText = formatPackagePrice(selectedPackage.price, countryValue);
+      selectedPackageName.textContent = selectedPackage.name;
+      selectedPackagePrice.textContent = priceText;
+      amountPaid.value = priceText;
+      proofPackageSelect.value = selectedPackage.plan;
+      updatePackageCardPrices(countryValue);
+      if (proofPackageSelect) {
+        const nobleOption = proofPackageSelect.querySelector('option[value="noble"]');
+        const dynastyOption = proofPackageSelect.querySelector('option[value="dynasty"]');
+        if (nobleOption) nobleOption.textContent = `Noble Package — ${formatPackagePrice(10000, countryValue)}`;
+        if (dynastyOption) dynastyOption.textContent = `Dynasty Package — ${formatPackagePrice(15000, countryValue)}`;
+      }
+    }
+
     function showStep(stepElement) {
       document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
       stepElement.classList.add('active');
@@ -188,33 +250,34 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function updateSelection() {
-      selectedPackageName.textContent = selectedPackage.name;
-      selectedPackagePrice.textContent = '₦' + selectedPackage.price.toLocaleString();
-      amountPaid.value = '₦' + selectedPackage.price.toLocaleString();
-      proofPackageSelect.value = selectedPackage.plan;
+    function selectPackage(card) {
+      packageCards.forEach(item => item.classList.remove('active'));
+      card.classList.add('active');
+      selectedPackage = {
+        name: card.dataset.name,
+        price: Number(card.dataset.price),
+        description: card.dataset.description,
+        plan: card.dataset.plan
+      };
+      updateSelection();
     }
 
     packageCards.forEach(card => {
-      card.addEventListener('click', function () {
-        packageCards.forEach(item => item.classList.remove('active'));
-        this.classList.add('active');
-        selectedPackage = {
-          name: this.dataset.name,
-          price: Number(this.dataset.price),
-          description: this.dataset.description,
-          plan: this.dataset.plan
-        };
-        updateSelection();
-        toPaymentBtn.disabled = false;
+      card.addEventListener('click', function (event) {
+        if (event.target.closest('.package-action-btn')) {
+          selectPackage(this);
+          showStep(stepPayment);
+          return;
+        }
+
+        selectPackage(this);
       });
     });
 
     function ensureSelection() {
-      if (!toPaymentBtn.disabled) return;
       const defaultCard = document.querySelector('.package-card[data-plan="noble"]');
       if (defaultCard) {
-        defaultCard.click();
+        selectPackage(defaultCard);
       }
     }
 
@@ -259,11 +322,6 @@
       renderProofFileInfo(this.files);
     });
 
-    toPaymentBtn.addEventListener('click', function () {
-      ensureSelection();
-      showStep(stepPayment);
-    });
-
     confirmPaymentBtn.addEventListener('click', function () {
       updateSelection();
       showStep(stepProof);
@@ -300,7 +358,8 @@
       const userName = document.getElementById('userName').value.trim();
       const emailAddress = document.getElementById('emailAddress').value.trim();
       const phoneNumber = document.getElementById('phoneNumber').value.trim();
-      const amount = '₦' + selectedPackage.price.toLocaleString();
+      const countryValue = countrySelect?.value || authUser?.country || params.get('country') || 'Nigeria';
+      const amount = formatPackagePrice(selectedPackage.price, countryValue);
       const packageName = selectedPackage.name;
       const whatsappNumber = '2348146839663';
       const whatsappMessage = `Hello Optinex, I have completed payment for ${packageName}.\n\nFull Name: ${fullName}\nUsername: ${userName}\nEmail: ${emailAddress}\nPhone: ${phoneNumber}\nPackage: ${packageName}\nAmount Paid: ${amount}\n\nI will attach my payment proof once WhatsApp opens.`;
