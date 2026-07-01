@@ -186,10 +186,12 @@
 
       try {
   const API_BASE =
+    window.location.protocol === 'file:' ||
     window.location.hostname === 'localhost' ||
-    window.location.hostname === '127.0.0.1'
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname === ''
       ? 'http://localhost:3000'
-      : 'https://optinex.onrender.com';
+      : window.location.origin;
 
   const response = await fetch(`${API_BASE}/api/register`, {
     method: 'POST',
@@ -205,7 +207,13 @@
     throw new Error(result.error || 'Registration failed');
   }
 
-        window.location.href = 'dashboard.html?username=' + encodeURIComponent(username) + '&country=' + encodeURIComponent(country);
+  const authUser = {
+    username: username.toLowerCase(),
+    email: payload.email ? String(payload.email).trim().toLowerCase() : '',
+    country: country
+  };
+  window.localStorage.setItem('optinexAuthUser', JSON.stringify(authUser));
+  window.location.href = 'activation.html?username=' + encodeURIComponent(authUser.username) + '&country=' + encodeURIComponent(authUser.country);
       } catch (error) {
         alert(error.message || 'Registration failed. Please try again.');
         if (submitButton) {

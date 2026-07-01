@@ -55,6 +55,8 @@
           </button>
         </div>
 
+        <div id="loginError" class="alert-box" role="alert" hidden style="display:none;"></div>
+
         <button type="submit" name="login" class="btn-submit">Let's GO! <i class="fas fa-arrow-right"></i></button>
       </form>
 
@@ -115,12 +117,71 @@
       }
     }
 
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
+    const loginError = document.getElementById('loginError');
+    const identificationInput = document.getElementById('identification');
+    const passwordInput = document.getElementById('loginPassword');
+
+    function showLoginError(message) {
+      if (!loginError) return;
+      loginError.innerHTML = `<i class="fas fa-circle-exclamation"></i><span>${message}</span>`;
+      loginError.hidden = false;
+      loginError.style.display = 'flex';
+    }
+
+    function clearLoginError() {
+      if (!loginError) return;
+      loginError.hidden = true;
+      loginError.style.display = 'none';
+      loginError.innerHTML = '';
+    }
+
+    [identificationInput, passwordInput].forEach(input => {
+      input?.addEventListener('input', clearLoginError);
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
       event.preventDefault();
       if (!this.reportValidity()) return;
 
-      const identification = document.getElementById('identification').value.trim() || 'Glamour User';
-      window.location.href = 'dashboard.html?username=' + encodeURIComponent(identification);
+      const identification = identificationInput.value.trim();
+      const password = passwordInput.value;
+      const submitButton = this.querySelector('button[type="submit"]');
+
+      clearLoginError();
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.innerHTML = 'Logging in <i class="fas fa-spinner fa-spin"></i>';
+      }
+
+      try {
+        const API_BASE =
+          window.location.protocol === 'file:' ||
+          window.location.hostname === 'localhost' ||
+          window.location.hostname === '127.0.0.1' ||
+          window.location.hostname === ''
+            ? 'http://localhost:3000'
+            : window.location.origin;
+
+        const response = await fetch(`${API_BASE}/api/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier: identification, password })
+        });
+
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || 'Login failed');
+
+        clearLoginError();
+        localStorage.setItem('optinexAuthUser', JSON.stringify(result.user));
+        window.location.href = 'activation.html?username=' + encodeURIComponent(result.user.username) + '&country=' + encodeURIComponent(result.user.country || 'Nigeria');
+      } catch (error) {
+        showLoginError(error.message || 'Login failed. Please check your credentials.');
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.innerHTML = 'Let\'s GO! <i class="fas fa-arrow-right"></i>';
+        }
+      }
     });
   </script>
 </body>

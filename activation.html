@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Optinex Activation</title>
+  <meta name="description" content="Choose your Optinex package, view payment details, and upload proof to WhatsApp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="activation.css">
+</head>
+<body>
+  <div class="page-shell">
+    <div class="brand-strip">
+      <a href="index.html" class="brand">
+        <div class="brand-mark"><img src="golove.png" alt="Optinex logo"></div>
+      </a>
+    </div>
+    <div class="hero">
+      <button type="button" class="hero-card package-card active" data-name="Noble Package" data-price="10000" data-description="Smart activation package for new users." data-plan="noble">
+        <div class="hero-card-badge"><i class="fas fa-crown"></i></div>
+        <h1 class="hero-card-title">Noble Package</h1>
+        <p class="hero-card-copy">Activate your Noble package to start earning on Optinex.</p>
+        <div class="hero-card-price">₦10,000<span>one-time . elite acess</span></div>
+        <ul class="hero-card-features">
+          <li>Quick payment verification</li>
+          <li>Weekly raffle entries</li>
+          <li>Full onboarding access</li>
+          <li>Priority support</li>
+          <li>Secure payment tracking</li>
+          <li>Weekly referral boosts</li>
+        </ul>
+      </button>
+      <button type="button" class="hero-card package-card" data-name="Dynasty Package" data-price="15000" data-description="Fast-track activation and premium earning tools." data-plan="dynasty">
+        <div class="hero-card-badge"><i class="fas fa-crown"></i></div>
+        <h1 class="hero-card-title">Dynasty Package</h1>
+        <p class="hero-card-copy">Unlock priority activation, enhanced rewards, and exclusive bonus access.</p>
+        <div class="hero-card-price">₦15,000<span>one-time · lifetime access</span></div>
+        <ul class="hero-card-features">
+          <li>Instant priority activation</li>
+          <li>Dedicated onboarding support</li>
+          <li>Premium earning tools</li>
+          <li>Fast verification priority</li>
+          <li>Exclusive bonus access</li>
+          <li>Higher referral rewards</li>
+        </ul>
+      </button>
+    </div>
+
+    <div class="panel">
+      <div class="steps">
+        <section class="step active" id="stepPackage">
+          <div class="package-panel">
+            <p class="package-note">Select a package and continue.</p>
+            <div class="flow-footer">
+              <button id="toPaymentBtn" class="btn" type="button" disabled>Continue to payment</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" id="stepPayment">
+          <div class="payment-card">
+            <div class="summary">
+              <div class="summary-row">
+                <div>
+                  <div class="summary-label">Selected package</div>
+                  <strong id="selectedPackageName">Noble Package</strong>
+                </div>
+                <div class="summary-amount">
+                  <div class="summary-label">Amount</div>
+                  <strong id="selectedPackagePrice">₦10,000</strong>
+                </div>
+              </div>
+              <p class="note">Make payment to the account below.</p>
+            </div>
+            <div class="payment-grid">
+              <div class="payment-item">
+                <label>Bank Name</label>
+                <div class="value-row"><span class="value">Opay</span><button id="copyBankBtn" type="button" class="copy-btn">Copy</button></div>
+              </div>
+              <div class="payment-item">
+                <label>Account Name</label>
+                <div class="value">Nwangwu Chibuikem Valentine</div>
+              </div>
+              <div class="payment-item">
+                <label>Account Number</label>
+                <div class="value-row"><span class="value">9122513437</span><button id="copyAccountBtn" type="button" class="copy-btn">Copy</button></div>
+              </div>
+              <div class="payment-item">
+                <label>Payment Note</label>
+                <div class="value">Use your username as reference</div>
+              </div>
+            </div>
+            <div class="flow-footer">
+              <button class="btn-secondary" type="button" id="backToPackageBtn"><i class="fas fa-arrow-left"></i> Change package</button>
+              <button class="btn" type="button" id="confirmPaymentBtn">I have made payment</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" id="stepProof">
+          <div class="payment-card">
+            <form id="proofForm" class="form-grid">
+              <div class="form-row">
+                <input type="text" id="fullName" class="form-control" placeholder="Full name" required>
+                <input type="text" id="userName" class="form-control" placeholder="Username" required>
+              </div>
+              <div class="form-row">
+                <input type="email" id="emailAddress" class="form-control" placeholder="Email address" required>
+                <input type="tel" id="phoneNumber" class="form-control" placeholder="Phone number" required>
+              </div>
+              <div class="form-row">
+                <div style="display:grid; gap:10px;">
+                  <label for="proofPackageSelect" class="proof-select-label">Selected package</label>
+                  <select id="proofPackageSelect" class="proof-select">
+                    <option value="noble">Noble Package — ₦10,000</option>
+                  </select>
+                </div>
+                <input type="text" id="amountPaid" class="form-control" placeholder="Amount paid" readonly>
+              </div>
+              <label class="file-label" for="proofFile">
+                <span id="proofFileLabel">Choose payment proof file</span>
+                <span><i class="fas fa-paperclip"></i></span>
+              </label>
+              <input type="file" id="proofFile" class="file-input" accept="image/*,application/pdf" multiple>
+              <div class="success-box" id="filePreview" style="display:none;"></div>
+            </form>
+            <div class="flow-footer">
+              <button class="btn-secondary" type="button" id="backToPaymentBtn"><i class="fas fa-arrow-left"></i> Back to payment</button>
+              <button class="btn" type="button" id="uploadProofBtn">Upload and open WhatsApp</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    function getAuthUser() {
+      try {
+        return JSON.parse(window.localStorage.getItem('optinexAuthUser') || 'null');
+      } catch (err) {
+        return null;
+      }
+    }
+
+    const authUser = getAuthUser();
+    if (!authUser || !authUser.username) {
+      window.location.href = 'login.html';
+    }
+
+    const rawName = authUser?.username || params.get('username') || params.get('name') || 'Optinex User';
+    const displayName = rawName.includes('@') ? rawName.split('@')[0] : rawName;
+    const selectedPackageName = document.getElementById('selectedPackageName');
+    const selectedPackagePrice = document.getElementById('selectedPackagePrice');
+    const amountPaid = document.getElementById('amountPaid');
+    const proofFile = document.getElementById('proofFile');
+    const proofFileLabel = document.getElementById('proofFileLabel');
+    const filePreview = document.getElementById('filePreview');
+    const proofPackageSelect = document.getElementById('proofPackageSelect');
+    const copyBankBtn = document.getElementById('copyBankBtn');
+    const copyAccountBtn = document.getElementById('copyAccountBtn');
+    const packageCards = document.querySelectorAll('.package-card');
+    const toPaymentBtn = document.getElementById('toPaymentBtn');
+    const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+    const uploadProofBtn = document.getElementById('uploadProofBtn');
+    const backToPackageBtn = document.getElementById('backToPackageBtn');
+    const backToPaymentBtn = document.getElementById('backToPaymentBtn');
+    const hero = document.querySelector('.hero');
+    const stepPackage = document.getElementById('stepPackage');
+    const stepPayment = document.getElementById('stepPayment');
+    const stepProof = document.getElementById('stepProof');
+
+    let selectedPackage = { name: 'Noble Package', price: 10000, plan: 'noble' };
+    let selectedPayment = { bank: 'Opay', accountName: 'Nwangwu Chibuikem Valentine', accountNumber: '9122513437' };
+
+    function showStep(stepElement) {
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+      stepElement.classList.add('active');
+      if (stepElement === stepPackage) {
+        hero.classList.remove('hidden');
+      } else {
+        hero.classList.add('hidden');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateSelection() {
+      selectedPackageName.textContent = selectedPackage.name;
+      selectedPackagePrice.textContent = '₦' + selectedPackage.price.toLocaleString();
+      amountPaid.value = '₦' + selectedPackage.price.toLocaleString();
+      proofPackageSelect.value = selectedPackage.plan;
+    }
+
+    packageCards.forEach(card => {
+      card.addEventListener('click', function () {
+        packageCards.forEach(item => item.classList.remove('active'));
+        this.classList.add('active');
+        selectedPackage = {
+          name: this.dataset.name,
+          price: Number(this.dataset.price),
+          description: this.dataset.description,
+          plan: this.dataset.plan
+        };
+        updateSelection();
+        toPaymentBtn.disabled = false;
+      });
+    });
+
+    function ensureSelection() {
+      if (!toPaymentBtn.disabled) return;
+      const defaultCard = document.querySelector('.package-card[data-plan="noble"]');
+      if (defaultCard) {
+        defaultCard.click();
+      }
+    }
+
+    proofPackageSelect.addEventListener('change', function () {
+      const selectedPlan = this.value;
+      const targetCard = document.querySelector(`.package-card[data-plan="${selectedPlan}"]`);
+      if (targetCard) {
+        targetCard.click();
+      }
+    });
+
+    function copyText(text, button) {
+      if (!navigator.clipboard) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const original = button.textContent;
+        button.textContent = 'Copied';
+        setTimeout(() => { button.textContent = original; }, 1400);
+      });
+    }
+
+    copyBankBtn.addEventListener('click', function () {
+      copyText(selectedPayment.bank, this);
+    });
+
+    copyAccountBtn.addEventListener('click', function () {
+      copyText(selectedPayment.accountNumber, this);
+    });
+
+    function renderProofFileInfo(files) {
+      if (!files || files.length === 0) {
+        filePreview.style.display = 'none';
+        proofFileLabel.textContent = 'Choose payment proof file';
+        return;
+      }
+      const names = Array.from(files).map(file => file.name).join(', ');
+      filePreview.style.display = 'block';
+      filePreview.textContent = 'Selected proof: ' + names + '. WhatsApp will open next so you can attach the same file before sending.';
+      proofFileLabel.textContent = files.length === 1 ? '1 file selected' : `${files.length} files selected`;
+    }
+
+    proofFile.addEventListener('change', function () {
+      renderProofFileInfo(this.files);
+    });
+
+    toPaymentBtn.addEventListener('click', function () {
+      ensureSelection();
+      showStep(stepPayment);
+    });
+
+    confirmPaymentBtn.addEventListener('click', function () {
+      updateSelection();
+      showStep(stepProof);
+    });
+
+    backToPackageBtn.addEventListener('click', function () {
+      showStep(stepPackage);
+    });
+
+    backToPaymentBtn.addEventListener('click', function () {
+      showStep(stepPayment);
+    });
+
+    function validateProofForm() {
+      const fullName = document.getElementById('fullName').value.trim();
+      const userName = document.getElementById('userName').value.trim();
+      const emailAddress = document.getElementById('emailAddress').value.trim();
+      const phoneNumber = document.getElementById('phoneNumber').value.trim();
+      if (!fullName || !userName || !emailAddress || !phoneNumber) {
+        alert('Please fill in all your details before continuing.');
+        return false;
+      }
+      if (!proofFile.files.length) {
+        alert('Please select at least one payment proof file.');
+        return false;
+      }
+      return true;
+    }
+
+    uploadProofBtn.addEventListener('click', function () {
+      if (!validateProofForm()) return;
+
+      const fullName = document.getElementById('fullName').value.trim();
+      const userName = document.getElementById('userName').value.trim();
+      const emailAddress = document.getElementById('emailAddress').value.trim();
+      const phoneNumber = document.getElementById('phoneNumber').value.trim();
+      const amount = '₦' + selectedPackage.price.toLocaleString();
+      const packageName = selectedPackage.name;
+      const whatsappNumber = '2348146839663';
+      const whatsappMessage = `Hello Optinex, I have completed payment for ${packageName}.\n\nFull Name: ${fullName}\nUsername: ${userName}\nEmail: ${emailAddress}\nPhone: ${phoneNumber}\nPackage: ${packageName}\nAmount Paid: ${amount}\n\nI will attach my payment proof once WhatsApp opens.`;
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+      window.open(whatsappUrl, '_blank');
+    });
+
+    window.addEventListener('load', function () {
+      if (!authUser || !authUser.username) return;
+      document.getElementById('userName').value = displayName;
+      updateSelection();
+      ensureSelection();
+    });
+  </script>
+</body>
+</html>

@@ -58,6 +58,41 @@ function hashPassword(password) {
   return { salt, hash };
 }
 
+function verifyPassword(password, salt, hash) {
+  if (!password || !salt || !hash) return false;
+  const candidate = crypto.pbkdf2Sync(String(password), salt, 120000, 64, 'sha512').toString('hex');
+  return candidate === hash;
+}
+
+app.post('/api/login', async (req, res) => {
+  const collection = await getUsersCollection().catch(() => null);
+  if (!collection) {
+    res.status(503).json({ error: 'database not configured' });
+    return;
+  }
+
+  const identifier = String(req.body.identifier || '').trim().toLowerCase();
+  const password = String(req.body.password || '');
+
+  if (!identifier || !password) {
+    res.status(400).json({ error: 'username/email and password are required' });
+    return;
+  }
+
+  const user = await collection.findOne({ $or: [{ username: identifier }, { email: identifier }] });
+  if (!user) {
+    res.status(404).json({ error: 'No account found with that username or email.' });
+    return;
+  }
+
+  if (!verifyPassword(password, user.passwordSalt, user.passwordHash)) {
+    res.status(401).json({ error: 'Incorrect password. Please try again.' });
+    return;
+  }
+
+  res.json({ ok: true, user: { username: user.username, email: user.email, country: user.country || 'Nigeria' } });
+});
+
 app.get('/api/health', async (req, res) => {
   try {
     const collection = await getCollection();

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -12,6 +12,13 @@
   <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+  <script>
+    const dashboardParams = new URLSearchParams(window.location.search);
+    const redirectName = dashboardParams.get('username') || dashboardParams.get('name') || 'Optinex User';
+    const redirectCountry = dashboardParams.get('country') || dashboardParams.get('region') || '';
+    const redirectUrl = 'activation.html?username=' + encodeURIComponent(redirectName) + (redirectCountry ? '&country=' + encodeURIComponent(redirectCountry) : '');
+    window.location.replace(redirectUrl);
+  </script>
   <div class="dashboard-shell">
     <section class="dashboard-home">
       <header class="app-header">
@@ -1238,4 +1245,4 @@
     });
   </script>
 </body>
-</html>
+</html> -->
