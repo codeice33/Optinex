@@ -15,12 +15,99 @@ let client;
 let dashboardStates;
 let users;
 
+const inMemoryDashboardStates = [];
+const inMemoryUsers = [];
+
+function createInMemoryCollection(store) {
+  return {
+    async createIndex() {},
+    async findOne(query = {}) {
+      if (query.$or) {
+        return store.find(item => query.$or.some(condition => {
+          if (condition.username !== undefined) {
+            return item.username === String(condition.username).trim().toLowerCase();
+          }
+          if (condition.email !== undefined) {
+            return item.email === String(condition.email).trim().toLowerCase();
+          }
+          return false;
+        })) || null;
+      }
+
+      if (query.username !== undefined && query.country !== undefined) {
+        const username = String(query.username).trim().toLowerCase();
+        const country = String(query.country).trim().toLowerCase();
+        return store.find(item => item.username === username && item.country === country) || null;
+      }
+
+      if (query.username !== undefined) {
+        const username = String(query.username).trim().toLowerCase();
+        return store.find(item => item.username === username) || null;
+      }
+
+      if (query.email !== undefined) {
+        const email = String(query.email).trim().toLowerCase();
+        return store.find(item => item.email === email) || null;
+      }
+
+      return null;
+    },
+    async insertOne(doc) {
+      store.push(doc);
+      return { acknowledged: true, insertedId: doc._id || store.length };
+    },
+    async updateOne(filter = {}, update = {}) {
+      const existingIndex = store.findIndex(item => {
+        if (filter.username !== undefined && filter.country !== undefined) {
+          return item.username === String(filter.username).trim().toLowerCase() && item.country === String(filter.country).trim().toLowerCase();
+        }
+        if (filter.username !== undefined) {
+          return item.username === String(filter.username).trim().toLowerCase();
+        }
+        if (filter.email !== undefined) {
+          return item.email === String(filter.email).trim().toLowerCase();
+        }
+        return false;
+      });
+
+      const nextDoc = existingIndex >= 0 ? { ...store[existingIndex] } : {};
+      const mergedDoc = { ...nextDoc, ...(update.$set || {}), ...(update.$setOnInsert || {}) };
+
+      if (existingIndex >= 0) {
+        store[existingIndex] = mergedDoc;
+        return { acknowledged: true, modifiedCount: 1, upsertedCount: 0 };
+      }
+
+      store.push(mergedDoc);
+      return { acknowledged: true, modifiedCount: 0, upsertedCount: 1 };
+    }
+  };
+}
+
 // Enable CORS
 app.use(cors({
-  origin: 'https://optinex.xtys.dev',
-  methods: ['GET', 'POST'],
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      'https://optinex.xtys.dev',
+      'https://www.optinex.xtys.dev',
+      'https://optinex.onrender.com',
+      'http://localhost:3000',
+      'http://localhost:5500',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:5500'
+    ];
+
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(null, false);
+  },
+  methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true
 }));
+app.options('*', cors());
 
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static(__dirname));
@@ -33,7 +120,14 @@ function normalizeKey(username, country) {
 }
 
 async function getCollection() {
-  if (!mongoUri) return null;
+  if (!mongoUri) {
+    if (!dashboardStates) {
+      dashboardStates = createInMemoryCollection(inMemoryDashboardStates);
+      users = createInMemoryCollection(inMemoryUsers);
+    }
+    return dashboardStates;
+  }
+
   if (!client) {
     client = new MongoClient(mongoUri);
     await client.connect();

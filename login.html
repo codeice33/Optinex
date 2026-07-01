@@ -155,13 +155,16 @@
       }
 
       try {
+        const host = window.location.hostname;
         const API_BASE =
           window.location.protocol === 'file:' ||
-          window.location.hostname === 'localhost' ||
-          window.location.hostname === '127.0.0.1' ||
-          window.location.hostname === ''
+          host === 'localhost' ||
+          host === '127.0.0.1' ||
+          host === ''
             ? 'http://localhost:3000'
-            : window.location.origin;
+            : host === 'optinex.xtys.dev' || host === 'www.optinex.xtys.dev'
+              ? 'https://optinex.onrender.com'
+              : window.location.origin;
 
         const response = await fetch(`${API_BASE}/api/login`, {
           method: 'POST',
